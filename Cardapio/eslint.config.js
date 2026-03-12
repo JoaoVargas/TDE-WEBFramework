@@ -54,6 +54,10 @@ export default defineConfig([
         },
       ],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'react-refresh/only-export-components': [
+        'off',
+        { allowConstantExport: true },
+      ],
     },
   },
   eslintConfigPrettier,
