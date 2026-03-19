@@ -31,7 +31,7 @@ a {
   color: inherit;
 }
 
-button,
+.app-button,
 .button-link {
   border: 0;
   border-radius: 0.65rem;
@@ -42,7 +42,7 @@ button,
   cursor: pointer;
 }
 
-button:hover,
+.app-button:hover,
 .button-link:hover {
   filter: brightness(1.07);
 }

@@ -92,6 +92,7 @@ export default function Cart() {
                   <div className="cart-item__actions">
                     <button
                       type="button"
+                      className="app-button cart-item__quantity-button"
                       onClick={() =>
                         setItemQuantity(
                           item.dish.id,
@@ -102,9 +103,12 @@ export default function Cart() {
                     >
                       -
                     </button>
-                    <span>{item.quantity}</span>
+                    <span className="cart-item__quantity-value">
+                      {item.quantity}
+                    </span>
                     <button
                       type="button"
+                      className="app-button cart-item__quantity-button"
                       onClick={() =>
                         setItemQuantity(
                           item.dish.id,
@@ -117,6 +121,7 @@ export default function Cart() {
                     </button>
                     <button
                       type="button"
+                      className="app-button cart-item__remove-button"
                       onClick={() =>
                         removeItem(item.dish.id, section.restaurantId)
                       }

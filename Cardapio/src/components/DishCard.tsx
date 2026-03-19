@@ -24,7 +24,11 @@ export default function DishCard({ dish, restaurantId, onAdd }: DishCardProps) {
         </div>
 
         <div className="dish-card__actions">
-          <button type="button" onClick={() => onAdd(dish)}>
+          <button
+            type="button"
+            className="app-button"
+            onClick={() => onAdd(dish)}
+          >
             Adicionar
           </button>
 

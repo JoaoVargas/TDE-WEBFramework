@@ -107,7 +107,11 @@ export default function Dish() {
           <span>{dish.prepTime}</span>
         </div>
 
-        <button type="button" onClick={() => addItem(dish)}>
+        <button
+          type="button"
+          className="app-button"
+          onClick={() => addItem(dish)}
+        >
           Adicionar ao carrinho
         </button>
 
