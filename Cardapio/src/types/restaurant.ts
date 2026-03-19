@@ -1,6 +1,6 @@
 import type { GeoPoint } from './location'
 
-export type Restaurant = {
+export interface Restaurant {
   id: string
   name: string
   address: string

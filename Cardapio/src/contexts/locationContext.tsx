@@ -6,16 +6,17 @@ import React, {
   useState,
 } from 'react'
 import type { ReactNode } from 'react'
-import { getCurrentCoordinates } from '../services/locationService'
-import type { GeoPoint } from '../types/location'
+
+import { getCurrentCoordinates } from '@/services/locationService'
+
+import type { GeoPoint } from '@/types/location'
+import type { FetchStatus } from '@/types/status'
 
 interface LocationContextType {
   location: GeoPoint | null
   setLocation: React.Dispatch<React.SetStateAction<GeoPoint | null>>
-  locationFetchState: 'idle' | 'fetching' | 'success' | 'error'
-  setLocationFetchState: React.Dispatch<
-    React.SetStateAction<'idle' | 'fetching' | 'success' | 'error'>
-  >
+  locationFetchStatus: FetchStatus
+  setLocationFetchStatus: React.Dispatch<React.SetStateAction<FetchStatus>>
 }
 
 const LocationContext = createContext<LocationContextType | undefined>(
@@ -26,7 +27,7 @@ export const LocationContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [location, setLocation] = useState<GeoPoint | null>(null)
-  const [locationFetchState, setLocationFetchState] = useState<
+  const [locationFetchStatus, setLocationFetchStatus] = useState<
     'idle' | 'fetching' | 'success' | 'error'
   >('idle')
 
@@ -35,16 +36,16 @@ export const LocationContextProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     async function initialize() {
       try {
-        setLocationFetchState('fetching')
+        setLocationFetchStatus('fetching')
 
         const currentCoordinates = await getCurrentCoordinates()
 
         if (currentCoordinates) {
           setLocation(currentCoordinates)
-          setLocationFetchState('success')
+          setLocationFetchStatus('success')
         }
       } catch (error) {
-        setLocationFetchState('error')
+        setLocationFetchStatus('error')
         console.error('Error fetching location:', error)
       }
     }
@@ -56,10 +57,10 @@ export const LocationContextProvider: React.FC<{ children: ReactNode }> = ({
     () => ({
       location,
       setLocation,
-      locationFetchState,
-      setLocationFetchState,
+      locationFetchStatus,
+      setLocationFetchStatus,
     }),
-    [location, setLocation, locationFetchState, setLocationFetchState],
+    [location, setLocation, locationFetchStatus, setLocationFetchStatus],
   )
 
   return (
