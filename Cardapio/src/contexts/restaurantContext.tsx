@@ -1,12 +1,14 @@
-import React, { createContext, useContext, useMemo, useState } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
 import type { ReactNode } from 'react'
 import type { Restaurant } from '../types/restaurant'
 import { listRestaurants } from '../services/restaurant'
 import { useQuery } from '@tanstack/react-query'
+import { getFoodImageByCategory } from '@/services/foodImageService'
 
 interface RestaurantContextType {
   restaurants: Restaurant[]
   restaurantsLoading: boolean
+  restaurantsError: string | null
 }
 
 const RestaurantContext = createContext<RestaurantContextType | undefined>(
@@ -16,29 +18,41 @@ const RestaurantContext = createContext<RestaurantContextType | undefined>(
 export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const { data: restaurants, isLoading: restaurantsLoading } = useQuery({
+  const {
+    data: restaurants,
+    isLoading: restaurantsLoading,
+    error,
+  } = useQuery({
     queryKey: ['restaurants'],
-    queryFn: async () => {
-      try {
-        const response = await listRestaurants()
+    queryFn: async ({ signal }) => {
+      const response = await listRestaurants(signal)
 
-        if (!response || !Array.isArray(response)) {
-          console.error('Invalid response format for restaurants:', response)
-          return []
-        }
-
-        return response
-      } catch (error) {
-        console.error(error)
-        return []
+      if (!response || !Array.isArray(response)) {
+        throw new Error('Invalid response format for restaurants')
       }
+
+      const restaurantsWithImages = await Promise.all(
+        response.map(async (restaurant) => ({
+          ...restaurant,
+          imageUrl: await getFoodImageByCategory(
+            restaurant.imageCategory,
+            signal,
+          ),
+        })),
+      )
+
+      return restaurantsWithImages
     },
     initialData: [],
   })
 
+  const restaurantsError = error
+    ? 'Nao foi possivel carregar os restaurantes.'
+    : null
+
   const values: RestaurantContextType = useMemo(
-    () => ({ restaurants, restaurantsLoading }),
-    [restaurants, restaurantsLoading],
+    () => ({ restaurants, restaurantsLoading, restaurantsError }),
+    [restaurants, restaurantsLoading, restaurantsError],
   )
 
   return (

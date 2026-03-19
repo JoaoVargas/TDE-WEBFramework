@@ -1,13 +1,20 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react'
 import type { ReactNode } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
-import { getCurrentCoordinates } from '@/services/locationService'
+import {
+  getCurrentCoordinates,
+  reverseGeocode,
+} from '@/services/locationService'
+import { useRestaurant } from '@/contexts/restaurantContext'
+import { findClosestRestaurant } from '@/services/restaurant'
+import { calculateDistanceInKm } from '@/utils/distance'
 
 import type { GeoPoint } from '@/types/location'
 import type { FetchStatus } from '@/types/status'
@@ -16,7 +23,9 @@ interface LocationContextType {
   location: GeoPoint | null
   setLocation: React.Dispatch<React.SetStateAction<GeoPoint | null>>
   locationFetchStatus: FetchStatus
-  setLocationFetchStatus: React.Dispatch<React.SetStateAction<FetchStatus>>
+  locationAddress: string | null
+  closestRestaurantId: string | null
+  getDistanceLabel: (restaurantId: string) => string
 }
 
 const LocationContext = createContext<LocationContextType | undefined>(
@@ -26,41 +35,103 @@ const LocationContext = createContext<LocationContextType | undefined>(
 export const LocationContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [location, setLocation] = useState<GeoPoint | null>(null)
-  const [locationFetchStatus, setLocationFetchStatus] = useState<
-    'idle' | 'fetching' | 'success' | 'error'
-  >('idle')
+  const { restaurants } = useRestaurant()
+  const [manualLocation, setManualLocation] = useState<GeoPoint | null>(null)
 
-  function findClosestRestaurant() {}
+  const {
+    data: currentLocation,
+    isFetching: isFetchingLocation,
+    isError: isLocationError,
+    isSuccess: isLocationSuccess,
+  } = useQuery({
+    queryKey: ['location', 'current-coordinates'],
+    queryFn: getCurrentCoordinates,
+    staleTime: 1000 * 60 * 5,
+  })
 
-  useEffect(() => {
-    async function initialize() {
-      try {
-        setLocationFetchStatus('fetching')
+  const location = manualLocation ?? currentLocation ?? null
 
-        const currentCoordinates = await getCurrentCoordinates()
-
-        if (currentCoordinates) {
-          setLocation(currentCoordinates)
-          setLocationFetchStatus('success')
-        }
-      } catch (error) {
-        setLocationFetchStatus('error')
-        console.error('Error fetching location:', error)
+  const { data: locationAddress } = useQuery({
+    queryKey: ['location', 'reverse-geocode', location?.lat, location?.lng],
+    queryFn: ({ signal }) => {
+      if (!location) {
+        return Promise.resolve('')
       }
+
+      return reverseGeocode(location, signal)
+    },
+    enabled: Boolean(location),
+    staleTime: 1000 * 60 * 15,
+  })
+
+  const locationFetchStatus: FetchStatus = useMemo(() => {
+    if (isFetchingLocation) {
+      return 'fetching'
     }
 
-    void initialize()
-  }, [])
+    if (isLocationError) {
+      return 'error'
+    }
+
+    if (isLocationSuccess || manualLocation) {
+      return 'success'
+    }
+
+    return 'idle'
+  }, [isFetchingLocation, isLocationError, isLocationSuccess, manualLocation])
+
+  const closestRestaurantId = useMemo(() => {
+    if (!location || restaurants.length === 0) {
+      return null
+    }
+
+    const closest = findClosestRestaurant(restaurants, location)
+
+    return closest?.id ?? null
+  }, [location, restaurants])
+
+  const distancesByRestaurantId = useMemo(() => {
+    if (!location || restaurants.length === 0) {
+      return new Map<string, number>()
+    }
+
+    return new Map(
+      restaurants.map((restaurant) => [
+        restaurant.id,
+        calculateDistanceInKm(location, restaurant.coordinates),
+      ]),
+    )
+  }, [location, restaurants])
+
+  const getDistanceLabel = useCallback(
+    (restaurantId: string) => {
+      const distance = distancesByRestaurantId.get(restaurantId)
+
+      if (typeof distance !== 'number') {
+        return '-- km'
+      }
+
+      return `${distance.toFixed(1)} km`
+    },
+    [distancesByRestaurantId],
+  )
 
   const values: LocationContextType = useMemo(
     () => ({
       location,
-      setLocation,
+      setLocation: setManualLocation,
       locationFetchStatus,
-      setLocationFetchStatus,
+      locationAddress: locationAddress || null,
+      closestRestaurantId,
+      getDistanceLabel,
     }),
-    [location, setLocation, locationFetchStatus, setLocationFetchStatus],
+    [
+      location,
+      locationFetchStatus,
+      locationAddress,
+      closestRestaurantId,
+      getDistanceLabel,
+    ],
   )
 
   return (

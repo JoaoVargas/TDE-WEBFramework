@@ -1,24 +1,21 @@
-type MealCategoryResponse = {
-  meals?: Array<{
-    strMeal: string
-    strMealThumb: string
-  }>
+import { mockRequest } from '@/services/mockApi'
+
+const IMAGE_BY_CATEGORY: Record<string, string> = {
+  Beef: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=80',
+  Chicken:
+    'https://images.unsplash.com/photo-1619881590738-a111d176d906?auto=format&fit=crop&w=1200&q=80',
+  Dessert:
+    'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1200&q=80',
+  Vegetarian:
+    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1200&q=80',
 }
 
 export async function getFoodImageByCategory(
   category: string,
   signal?: AbortSignal,
 ) {
-  const response = await fetch(
-    `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category)}`,
+  return mockRequest(
+    () => IMAGE_BY_CATEGORY[category] ?? IMAGE_BY_CATEGORY.Beef,
     { signal },
   )
-
-  if (!response.ok) {
-    throw new Error(`Unable to load food image for ${category}`)
-  }
-
-  const payload = (await response.json()) as MealCategoryResponse
-
-  return payload.meals?.[0]?.strMealThumb ?? null
 }

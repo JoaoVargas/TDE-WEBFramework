@@ -1,4 +1,6 @@
-import type { GeoPoint, ReverseGeocodeResponse } from '../types/location'
+import { mockRequest } from '@/services/mockApi'
+import type { GeoPoint } from '../types/location'
+import { calculateDistanceInKm } from '@/utils/distance'
 
 const CURITIBA_CENTER: GeoPoint = {
   lat: -25.42972,
@@ -34,21 +36,40 @@ export async function reverseGeocode(
   point: GeoPoint,
   signal?: AbortSignal,
 ): Promise<string> {
-  const response = await fetch(
-    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${point.lat}&longitude=${point.lng}&localityLanguage=pt`,
+  const knownPlaces = [
+    {
+      label: 'Alto da XV, Curitiba - PR',
+      coordinates: { lat: -25.41797, lng: -49.25249 },
+    },
+    {
+      label: 'Batel, Curitiba - PR',
+      coordinates: { lat: -25.44175, lng: -49.29042 },
+    },
+    {
+      label: 'Centro, Curitiba - PR',
+      coordinates: { lat: -25.43843, lng: -49.27314 },
+    },
+  ]
+
+  return mockRequest(
+    () => {
+      const closestPlace = knownPlaces.reduce((closest, current) => {
+        const currentDistance = calculateDistanceInKm(
+          point,
+          current.coordinates,
+        )
+        const closestDistance = calculateDistanceInKm(
+          point,
+          closest.coordinates,
+        )
+
+        return currentDistance < closestDistance ? current : closest
+      })
+
+      return closestPlace.label
+    },
     { signal },
   )
-
-  if (!response.ok) {
-    throw new Error('Unable to resolve the current address')
-  }
-
-  const payload = (await response.json()) as ReverseGeocodeResponse
-  const locality = payload.locality ?? payload.city ?? 'Centro'
-  const region = payload.principalSubdivision ?? 'Parana'
-  const postalCode = payload.postcode ? `, ${payload.postcode}` : ''
-
-  return `${locality}, ${region}${postalCode}`
 }
 
 export function getFallbackCoordinates() {

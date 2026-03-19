@@ -1,0 +1,224 @@
+:root {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  --bg: #f7f4ef;
+  --surface: #ffffff;
+  --ink: #1e2420;
+  --muted: #6f7a72;
+  --brand: #f66f3c;
+  --brand-2: #1f6a59;
+  --danger: #bb3a32;
+
+  color: var(--ink);
+  background-color: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 10%, #ffcfb940 0, transparent 38%),
+    radial-gradient(circle at 90% 40%, #8dd6c640 0, transparent 35%), var(--bg);
+}
+
+a {
+  color: inherit;
+}
+
+.app-layout {
+  min-height: 100vh;
+}
+
+.app-layout__content {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: 1.2rem 0 2rem;
+}
+
+.app-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+  background: #f7f4efd9;
+  border-bottom: 1px solid #ddd5cb;
+}
+
+.app-navbar__inner {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: 0.85rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.app-navbar__brand {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.18rem;
+  letter-spacing: 0.02em;
+}
+
+.app-navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.app-navbar__link {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid transparent;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.app-navbar__link:hover,
+.app-navbar__link.is-active {
+  border-color: #d8d3cb;
+  color: var(--ink);
+  background: #fff;
+}
+
+.app-navbar__cart-badge {
+  min-width: 1.35rem;
+  text-align: center;
+  font-size: 0.76rem;
+  color: #fff;
+  background: var(--brand);
+  border-radius: 999px;
+  padding: 0.15rem 0.38rem;
+}
+
+.restaurant-card {
+  overflow: hidden;
+  border-radius: 1.1rem;
+  border: 1px solid #d9d4cb;
+  background: var(--surface);
+  box-shadow: 0 14px 28px -22px #11111180;
+}
+
+.restaurant-card__media {
+  position: relative;
+  min-height: 190px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.restaurant-card__image {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.restaurant-card__image--placeholder {
+  background: linear-gradient(130deg, #fce5da, #f0f4f2);
+}
+
+.restaurant-card__badge-row {
+  position: absolute;
+  left: 0.8rem;
+  top: 0.8rem;
+  display: flex;
+  gap: 0.45rem;
+}
+
+.restaurant-card__badge {
+  font-size: 0.73rem;
+  font-weight: 700;
+  background: #ffffffe8;
+  border-radius: 999px;
+  padding: 0.26rem 0.58rem;
+}
+
+.restaurant-card__badge--hot {
+  background: #ffe0d7;
+  color: #7e2816;
+}
+
+.restaurant-card__content {
+  padding: 0.9rem;
+}
+
+.restaurant-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.restaurant-card__header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.restaurant-card__header p {
+  margin: 0.15rem 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.restaurant-card__rating {
+  font-weight: 700;
+  background: #f0f6f4;
+  border-radius: 0.55rem;
+  padding: 0.2rem 0.5rem;
+  height: fit-content;
+}
+
+.restaurant-card__dish {
+  margin: 0.75rem 0;
+  font-size: 0.89rem;
+}
+
+.restaurant-card__meta {
+  display: flex;
+  gap: 0.6rem;
+  color: var(--muted);
+  font-size: 0.81rem;
+}
+
+.restaurant-card__address {
+  margin-top: 0.65rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+button,
+.button-link {
+  border: 0;
+  border-radius: 0.65rem;
+  background: var(--brand-2);
+  color: #fff;
+  font: inherit;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+
+button:hover,
+.button-link:hover {
+  filter: brightness(1.07);
+}
+
+@media (max-width: 720px) {
+  .app-navbar__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-layout__content {
+    width: min(1120px, 94vw);
+  }
+}

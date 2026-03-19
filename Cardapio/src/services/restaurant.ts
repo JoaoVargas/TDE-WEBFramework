@@ -1,6 +1,7 @@
 import type { Restaurant } from '@/types/restaurant'
 import type { GeoPoint } from '@/types/location'
 import { calculateDistanceInKm } from '@/utils/distance'
+import { mockRequest } from '@/services/mockApi'
 
 const RESTAURANTS: Restaurant[] = [
   {
@@ -62,8 +63,17 @@ const RESTAURANTS: Restaurant[] = [
   },
 ]
 
-export async function listRestaurants() {
-  return Promise.resolve(RESTAURANTS)
+export async function listRestaurants(signal?: AbortSignal) {
+  return mockRequest(() => RESTAURANTS, { signal })
+}
+
+export async function getRestaurantById(id: string, signal?: AbortSignal) {
+  return mockRequest(
+    () => RESTAURANTS.find((restaurant) => restaurant.id === id) ?? null,
+    {
+      signal,
+    },
+  )
 }
 
 export function findClosestRestaurant(
