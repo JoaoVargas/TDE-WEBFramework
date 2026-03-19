@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Link, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 
 import { useCart } from '@/contexts/cartContext'
 import { useLocation } from '@/contexts/locationContext'
@@ -43,7 +43,7 @@ export default function Restaurant() {
   }
 
   if (!restaurant) {
-    return <p className="restaurant-page__state">Restaurante nao encontrado.</p>
+    return <Navigate to="/restaurant-not-found" replace />
   }
 
   return (

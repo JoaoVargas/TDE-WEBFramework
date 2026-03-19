@@ -18,6 +18,8 @@ const RESTAURANTS: Restaurant[] = [
     rating: 4.8,
     priceLevel: '$$',
     accentColor: '#ff5a36',
+    imageUrl:
+      'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=80',
     coordinates: {
       lat: -25.41797,
       lng: -49.25249,
@@ -37,6 +39,8 @@ const RESTAURANTS: Restaurant[] = [
     rating: 4.7,
     priceLevel: '$$',
     accentColor: '#f4a340',
+    imageUrl:
+      'https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=1200&q=80',
     coordinates: {
       lat: -25.44175,
       lng: -49.29042,
@@ -56,6 +60,8 @@ const RESTAURANTS: Restaurant[] = [
     rating: 4.9,
     priceLevel: '$$',
     accentColor: '#2d8f78',
+    imageUrl:
+      'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=80',
     coordinates: {
       lat: -25.43843,
       lng: -49.27314,

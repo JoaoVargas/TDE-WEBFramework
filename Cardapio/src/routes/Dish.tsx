@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 
 import { useCart } from '@/contexts/cartContext'
 import { getDishById } from '@/services/dish'
@@ -42,7 +42,7 @@ export default function Dish() {
   }
 
   if (!dish) {
-    return <p className="dish-page__state">Prato nao encontrado.</p>
+    return <Navigate to="/dish-not-found" replace />
   }
 
   return (

@@ -222,3 +222,25 @@ button:hover,
     width: min(1120px, 94vw);
   }
 }
+
+.missing-page {
+  border: 1px solid #ddd5cb;
+  border-radius: 1rem;
+  background: #fff;
+  padding: 1rem;
+}
+
+.missing-page h1 {
+  margin: 0;
+}
+
+.missing-page p {
+  color: var(--muted);
+  margin: 0.45rem 0 0.9rem;
+}
+
+.missing-page__link {
+  text-decoration: none;
+  color: var(--brand-2);
+  font-weight: 700;
+}

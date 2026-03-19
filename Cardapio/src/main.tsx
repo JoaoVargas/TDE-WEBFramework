@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import BaseLayout from '@/components/BaseLayout'
 
@@ -12,6 +12,8 @@ import { RestaurantContextProvider } from '@/contexts/restaurantContext'
 import Cart from '@/routes/Cart'
 import Dish from '@/routes/Dish'
 import Home from '@/routes/Home'
+import MissingDish from '@/routes/MissingDish'
+import MissingRestaurant from '@/routes/MissingRestaurant'
 import Restaurant from '@/routes/Restaurant'
 
 import './styles.css'
@@ -33,7 +35,10 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/restaurant/:id" element={<Restaurant />} />
+        <Route path="/restaurant-not-found" element={<MissingRestaurant />} />
         <Route path="/dish/:id" element={<Dish />} />
+        <Route path="/dish-not-found" element={<MissingDish />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   )

@@ -3,7 +3,6 @@ import type { ReactNode } from 'react'
 import type { Restaurant } from '../types/restaurant'
 import { listRestaurants } from '../services/restaurant'
 import { useQuery } from '@tanstack/react-query'
-import { getFoodImageByCategory } from '@/services/foodImageService'
 
 interface RestaurantContextType {
   restaurants: Restaurant[]
@@ -31,17 +30,7 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
         throw new Error('Invalid response format for restaurants')
       }
 
-      const restaurantsWithImages = await Promise.all(
-        response.map(async (restaurant) => ({
-          ...restaurant,
-          imageUrl: await getFoodImageByCategory(
-            restaurant.imageCategory,
-            signal,
-          ),
-        })),
-      )
-
-      return restaurantsWithImages
+      return response
     },
     initialData: [],
   })
