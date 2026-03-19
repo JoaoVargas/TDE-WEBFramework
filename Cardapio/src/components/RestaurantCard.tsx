@@ -1,5 +1,7 @@
 import type { Restaurant } from '../types/restaurant'
 
+import './RestaurantCard.css'
+
 type RestaurantCardProps = {
   restaurant: Restaurant
   isClosest: boolean

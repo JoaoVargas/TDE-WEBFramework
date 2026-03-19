@@ -1,0 +1,67 @@
+.app-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+  background: #f7f4efd9;
+  border-bottom: 1px solid #ddd5cb;
+}
+
+.app-navbar__inner {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: 0.85rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.app-navbar__brand {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.18rem;
+  letter-spacing: 0.02em;
+}
+
+.app-navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.app-navbar__link {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid transparent;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.app-navbar__link:hover,
+.app-navbar__link.is-active {
+  border-color: #d8d3cb;
+  color: var(--ink);
+  background: #fff;
+}
+
+.app-navbar__cart-badge {
+  min-width: 1.35rem;
+  text-align: center;
+  font-size: 0.76rem;
+  color: #fff;
+  background: var(--brand);
+  border-radius: 999px;
+  padding: 0.15rem 0.38rem;
+}
+
+@media (max-width: 720px) {
+  .app-navbar__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

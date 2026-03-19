@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import './MissingDish.css'
+
 export default function MissingDish() {
   return (
     <section className="missing-page">

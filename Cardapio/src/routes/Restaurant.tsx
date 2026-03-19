@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
+
+import DishCard from '@/components/DishCard'
 
 import { useCart } from '@/contexts/cartContext'
 import { useLocation } from '@/contexts/locationContext'
@@ -115,30 +117,12 @@ export default function Restaurant() {
 
       <div className="restaurant-page__grid">
         {dishes.map((dish) => (
-          <article className="dish-card" key={dish.id}>
-            <img
-              src={dish.imageUrl}
-              alt={dish.name}
-              className="dish-card__image"
-            />
-
-            <div className="dish-card__content">
-              <h3>{dish.name}</h3>
-              <p>{dish.description}</p>
-              <div className="dish-card__meta">
-                <span>R$ {dish.price.toFixed(2)}</span>
-                <span>{dish.prepTime}</span>
-              </div>
-
-              <div className="dish-card__actions">
-                <button type="button" onClick={() => addItem(dish)}>
-                  Adicionar
-                </button>
-
-                <Link to={`/dish/${restaurant.id}/${dish.id}`}>Detalhes</Link>
-              </div>
-            </div>
-          </article>
+          <DishCard
+            key={dish.id}
+            dish={dish}
+            restaurantId={restaurant.id}
+            onAdd={addItem}
+          />
         ))}
       </div>
     </section>

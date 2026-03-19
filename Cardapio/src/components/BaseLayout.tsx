@@ -1,6 +1,8 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 
+import './BaseLayout.css'
+
 function RootLayout() {
   return (
     <div className="app-layout">

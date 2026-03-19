@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import { useCart } from '@/contexts/cartContext'
 
+import './Navbar.css'
+
 const navItems = [
   { to: '/', label: 'Home', end: true },
   { to: '/cart', label: 'Cart' },
