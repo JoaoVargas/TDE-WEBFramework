@@ -109,12 +109,16 @@ export async function listDishesByRestaurant(
 ) {
   return mockRequest(
     () => DISHES.filter((dish) => dish.restaurantId === restaurantId),
-    { signal },
+    {
+      signal,
+      debugLabel: `dishes:listByRestaurant:${restaurantId}`,
+    },
   )
 }
 
 export async function getDishById(id: string, signal?: AbortSignal) {
   return mockRequest(() => DISHES.find((dish) => dish.id === id) ?? null, {
     signal,
+    debugLabel: `dishes:getById:${id}`,
   })
 }

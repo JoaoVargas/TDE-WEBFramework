@@ -2,6 +2,8 @@ type MockRequestOptions = {
   signal?: AbortSignal
   minDelayMs?: number
   maxDelayMs?: number
+  debugLabel?: string
+  respectAbort?: boolean
 }
 
 const DEFAULT_MIN_DELAY_MS = 180
@@ -19,6 +21,19 @@ function createAbortError() {
   return new DOMException('Request aborted', 'AbortError')
 }
 
+function logDebug(message: string, details?: unknown) {
+  if (!import.meta.env.DEV) {
+    return
+  }
+
+  if (typeof details === 'undefined') {
+    console.warn(`[mockApi] ${message}`)
+    return
+  }
+
+  console.warn(`[mockApi] ${message}`, details)
+}
+
 export async function mockRequest<T>(
   factory: () => T | Promise<T>,
   options: MockRequestOptions = {},
@@ -27,31 +42,63 @@ export async function mockRequest<T>(
     signal,
     minDelayMs = DEFAULT_MIN_DELAY_MS,
     maxDelayMs = DEFAULT_MAX_DELAY_MS,
+    debugLabel = 'anonymous-request',
+    respectAbort = true,
   } = options
 
-  if (signal?.aborted) {
-    throw createAbortError()
+  if (respectAbort && signal?.aborted) {
+    const abortedError = createAbortError()
+    logDebug(`${debugLabel} aborted before start`, abortedError)
+    throw abortedError
   }
+
+  const delayMs = getDelayMs(minDelayMs, maxDelayMs)
+  logDebug(`${debugLabel} started`, { delayMs, respectAbort })
 
   await new Promise<void>((resolve, reject) => {
-    const delay = getDelayMs(minDelayMs, maxDelayMs)
-    const timer = setTimeout(() => {
-      signal?.removeEventListener('abort', abortHandler)
-      resolve()
-    }, delay)
+    let settled = false
 
     const abortHandler = () => {
+      if (!respectAbort || settled) {
+        return
+      }
+
+      settled = true
       clearTimeout(timer)
       signal?.removeEventListener('abort', abortHandler)
-      reject(createAbortError())
+
+      const abortedError = createAbortError()
+      logDebug(`${debugLabel} aborted while waiting`, abortedError)
+      reject(abortedError)
     }
 
-    signal?.addEventListener('abort', abortHandler)
+    const timer = setTimeout(() => {
+      if (settled) {
+        return
+      }
+
+      settled = true
+      signal?.removeEventListener('abort', abortHandler)
+      resolve()
+    }, delayMs)
+
+    if (respectAbort) {
+      signal?.addEventListener('abort', abortHandler)
+    }
   })
 
-  if (signal?.aborted) {
-    throw createAbortError()
+  if (respectAbort && signal?.aborted) {
+    const abortedError = createAbortError()
+    logDebug(`${debugLabel} aborted after wait`, abortedError)
+    throw abortedError
   }
 
-  return factory()
+  try {
+    const result = await factory()
+    logDebug(`${debugLabel} resolved`)
+    return result
+  } catch (error) {
+    logDebug(`${debugLabel} failed`, error)
+    throw error
+  }
 }

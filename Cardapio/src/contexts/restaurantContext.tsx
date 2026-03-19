@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from 'react'
+import React, { createContext, useContext, useEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
 import type { Restaurant } from '../types/restaurant'
 import { listRestaurants } from '../services/restaurant'
@@ -18,8 +18,9 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const {
-    data: restaurants,
+    data: restaurantsData,
     isLoading: restaurantsLoading,
+    isError: restaurantsIsError,
     error,
   } = useQuery({
     queryKey: ['restaurants'],
@@ -32,8 +33,22 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
 
       return response
     },
-    initialData: [],
   })
+
+  const restaurants = useMemo(() => restaurantsData ?? [], [restaurantsData])
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) {
+      return
+    }
+
+    console.warn('[restaurants:context] query state', {
+      loading: restaurantsLoading,
+      isError: restaurantsIsError,
+      total: restaurants.length,
+      error,
+    })
+  }, [restaurantsLoading, restaurantsIsError, restaurants.length, error])
 
   const restaurantsError = error
     ? 'Nao foi possivel carregar os restaurantes.'

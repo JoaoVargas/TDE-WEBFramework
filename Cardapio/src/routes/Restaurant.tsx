@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 
 import { useCart } from '@/contexts/cartContext'
@@ -14,7 +15,12 @@ export default function Restaurant() {
   const { addItem } = useCart()
   const { getDistanceLabel } = useLocation()
 
-  const { data: restaurant, isLoading: isLoadingRestaurant } = useQuery({
+  const {
+    data: restaurant,
+    isLoading: isLoadingRestaurant,
+    isError: isRestaurantError,
+    error: restaurantError,
+  } = useQuery({
     queryKey: ['restaurant', id],
     queryFn: ({ signal }) => {
       if (!id) {
@@ -26,7 +32,12 @@ export default function Restaurant() {
     enabled: Boolean(id),
   })
 
-  const { data: dishes = [], isLoading: isLoadingMenu } = useQuery({
+  const {
+    data: dishes = [],
+    isLoading: isLoadingMenu,
+    isError: isMenuError,
+    error: menuError,
+  } = useQuery({
     queryKey: ['restaurant-menu', id],
     queryFn: ({ signal }) => {
       if (!id) {
@@ -37,6 +48,34 @@ export default function Restaurant() {
     },
     enabled: Boolean(id),
   })
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) {
+      return
+    }
+
+    console.warn('[restaurant:route] state', {
+      id,
+      isLoadingRestaurant,
+      isRestaurantError,
+      restaurantError,
+      hasRestaurant: Boolean(restaurant),
+      isLoadingMenu,
+      isMenuError,
+      menuError,
+      dishesCount: dishes.length,
+    })
+  }, [
+    id,
+    isLoadingRestaurant,
+    isRestaurantError,
+    restaurantError,
+    restaurant,
+    isLoadingMenu,
+    isMenuError,
+    menuError,
+    dishes.length,
+  ])
 
   if (isLoadingRestaurant) {
     return <p className="restaurant-page__state">Carregando restaurante...</p>

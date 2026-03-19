@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 
 import { useCart } from '@/contexts/cartContext'
@@ -11,7 +12,12 @@ export default function Dish() {
   const { id } = useParams()
   const { addItem, items } = useCart()
 
-  const { data: dish, isLoading } = useQuery({
+  const {
+    data: dish,
+    isLoading,
+    isError: isDishError,
+    error: dishError,
+  } = useQuery({
     queryKey: ['dish', id],
     queryFn: ({ signal }) => {
       if (!id) {
@@ -23,7 +29,11 @@ export default function Dish() {
     enabled: Boolean(id),
   })
 
-  const { data: restaurant } = useQuery({
+  const {
+    data: restaurant,
+    isError: isRestaurantError,
+    error: restaurantError,
+  } = useQuery({
     queryKey: ['restaurant', dish?.restaurantId],
     queryFn: ({ signal }) => {
       if (!dish?.restaurantId) {
@@ -34,6 +44,34 @@ export default function Dish() {
     },
     enabled: Boolean(dish?.restaurantId),
   })
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) {
+      return
+    }
+
+    console.warn('[dish:route] state', {
+      id,
+      isLoading,
+      isDishError,
+      dishError,
+      dishId: dish?.id ?? null,
+      relatedRestaurantId: dish?.restaurantId ?? null,
+      isRestaurantError,
+      restaurantError,
+      hasRestaurant: Boolean(restaurant),
+    })
+  }, [
+    id,
+    isLoading,
+    isDishError,
+    dishError,
+    dish?.id,
+    dish?.restaurantId,
+    isRestaurantError,
+    restaurantError,
+    restaurant,
+  ])
 
   const itemInCart = items.find((item) => item.dish.id === dish?.id)
 

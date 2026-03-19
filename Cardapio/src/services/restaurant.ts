@@ -70,7 +70,10 @@ const RESTAURANTS: Restaurant[] = [
 ]
 
 export async function listRestaurants(signal?: AbortSignal) {
-  return mockRequest(() => RESTAURANTS, { signal })
+  return mockRequest(() => RESTAURANTS, {
+    signal,
+    debugLabel: 'restaurants:list',
+  })
 }
 
 export async function getRestaurantById(id: string, signal?: AbortSignal) {
@@ -78,6 +81,7 @@ export async function getRestaurantById(id: string, signal?: AbortSignal) {
     () => RESTAURANTS.find((restaurant) => restaurant.id === id) ?? null,
     {
       signal,
+      debugLabel: `restaurants:getById:${id}`,
     },
   )
 }
