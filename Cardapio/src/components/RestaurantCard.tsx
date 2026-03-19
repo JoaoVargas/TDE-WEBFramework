@@ -2,7 +2,7 @@ import type { Restaurant } from '../types/restaurant'
 
 import './RestaurantCard.css'
 
-type RestaurantCardProps = {
+interface RestaurantCardProps {
   restaurant: Restaurant
   isClosest: boolean
   distanceLabel: string

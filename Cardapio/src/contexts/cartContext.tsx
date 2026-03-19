@@ -8,29 +8,7 @@ import React, {
 } from 'react'
 import type { ReactNode } from 'react'
 import type { Dish } from '@/types/dish'
-
-type CartItem = {
-  dish: Dish
-  quantity: number
-}
-
-type CartState = Record<string, CartItem[]>
-
-interface CartContextType {
-  items: CartItem[]
-  itemsByRestaurant: CartState
-  totalItems: number
-  totalPrice: number
-  addItem: (dish: Dish) => void
-  removeItem: (dishId: string, restaurantId?: string) => void
-  setItemQuantity: (
-    dishId: string,
-    quantity: number,
-    restaurantId?: string,
-  ) => void
-  clearRestaurantCart: (restaurantId: string) => void
-  clearCart: () => void
-}
+import type { CartContextType, CartItem, CartState } from '../types/cart'
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 

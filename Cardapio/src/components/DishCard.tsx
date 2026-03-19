@@ -4,7 +4,7 @@ import type { Dish } from '@/types/dish'
 
 import './DishCard.css'
 
-type DishCardProps = {
+interface DishCardProps {
   dish: Dish
   restaurantId: string
   onAdd: (dish: Dish) => void

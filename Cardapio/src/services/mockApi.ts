@@ -1,4 +1,4 @@
-type MockRequestOptions = {
+interface MockRequestOptions {
   signal?: AbortSignal
   minDelayMs?: number
   maxDelayMs?: number

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '@/contexts/cartContext'
+import type { CartItem, CartSection } from '../types/cart'
 import { useRestaurant } from '@/contexts/restaurantContext'
 
 import './Cart.css'
@@ -17,7 +18,9 @@ export default function Cart() {
   } = useCart()
   const { restaurants } = useRestaurant()
 
-  const sections = Object.entries(itemsByRestaurant)
+  const entries: Array<[string, CartItem[]]> = Object.entries(itemsByRestaurant)
+
+  const sections: CartSection[] = entries
     .map(([restaurantId, restaurantItems]) => {
       const restaurant = restaurants.find((entry) => entry.id === restaurantId)
       const sectionTotal = restaurantItems.reduce(
@@ -39,7 +42,7 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <section className="cart-page cart-page--empty">
-        <h1>Seu carrinho esta vazio</h1>
+        <h1>Seu carrinho está vazio</h1>
         <p>Adicione pratos de qualquer unidade para continuar.</p>
         <Link to="/">Explorar restaurantes</Link>
       </section>
