@@ -57,7 +57,11 @@ export default function Cart() {
           <p>{totalItems} item(ns) selecionado(s)</p>
         </div>
 
-        <button type="button" onClick={clearCart}>
+        <button
+          type="button"
+          className="app-button cart-page__clear-button"
+          onClick={clearCart}
+        >
           Limpar carrinho
         </button>
       </header>
@@ -69,6 +73,7 @@ export default function Cart() {
               <h2>{section.restaurantName}</h2>
               <button
                 type="button"
+                className="app-button cart-section__clear-button"
                 onClick={() => clearRestaurantCart(section.restaurantId)}
               >
                 Limpar unidade
