@@ -1,17 +1,40 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '@/contexts/cartContext'
+import { useRestaurant } from '@/contexts/restaurantContext'
 
 import './Cart.css'
 
 export default function Cart() {
   const {
     items,
+    itemsByRestaurant,
     totalItems,
     totalPrice,
     setItemQuantity,
     removeItem,
+    clearRestaurantCart,
     clearCart,
   } = useCart()
+  const { restaurants } = useRestaurant()
+
+  const sections = Object.entries(itemsByRestaurant)
+    .map(([restaurantId, restaurantItems]) => {
+      const restaurant = restaurants.find((entry) => entry.id === restaurantId)
+      const sectionTotal = restaurantItems.reduce(
+        (total, item) => total + item.quantity * item.dish.price,
+        0,
+      )
+
+      return {
+        restaurantId,
+        restaurantName: restaurant?.name ?? `Unidade ${restaurantId}`,
+        items: restaurantItems,
+        sectionTotal,
+      }
+    })
+    .sort((first, second) =>
+      first.restaurantName.localeCompare(second.restaurantName),
+    )
 
   if (items.length === 0) {
     return (
@@ -37,35 +60,75 @@ export default function Cart() {
       </header>
 
       <div className="cart-page__list">
-        {items.map((item) => (
-          <article className="cart-item" key={item.dish.id}>
-            <img src={item.dish.imageUrl} alt={item.dish.name} />
-
-            <div className="cart-item__content">
-              <h2>{item.dish.name}</h2>
-              <p>{item.dish.description}</p>
-              <strong>R$ {item.dish.price.toFixed(2)}</strong>
-            </div>
-
-            <div className="cart-item__actions">
+        {sections.map((section) => (
+          <section className="cart-section" key={section.restaurantId}>
+            <header className="cart-section__header">
+              <h2>{section.restaurantName}</h2>
               <button
                 type="button"
-                onClick={() => setItemQuantity(item.dish.id, item.quantity - 1)}
+                onClick={() => clearRestaurantCart(section.restaurantId)}
               >
-                -
+                Limpar unidade
               </button>
-              <span>{item.quantity}</span>
-              <button
-                type="button"
-                onClick={() => setItemQuantity(item.dish.id, item.quantity + 1)}
-              >
-                +
-              </button>
-              <button type="button" onClick={() => removeItem(item.dish.id)}>
-                Remover
-              </button>
+            </header>
+
+            <div className="cart-section__items">
+              {section.items.map((item) => (
+                <article
+                  className="cart-item"
+                  key={`${section.restaurantId}-${item.dish.id}`}
+                >
+                  <img src={item.dish.imageUrl} alt={item.dish.name} />
+
+                  <div className="cart-item__content">
+                    <h3>{item.dish.name}</h3>
+                    <p>{item.dish.description}</p>
+                    <strong>R$ {item.dish.price.toFixed(2)}</strong>
+                  </div>
+
+                  <div className="cart-item__actions">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setItemQuantity(
+                          item.dish.id,
+                          item.quantity - 1,
+                          section.restaurantId,
+                        )
+                      }
+                    >
+                      -
+                    </button>
+                    <span>{item.quantity}</span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setItemQuantity(
+                          item.dish.id,
+                          item.quantity + 1,
+                          section.restaurantId,
+                        )
+                      }
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        removeItem(item.dish.id, section.restaurantId)
+                      }
+                    >
+                      Remover
+                    </button>
+                  </div>
+                </article>
+              ))}
             </div>
-          </article>
+
+            <p className="cart-section__total">
+              Subtotal da unidade: R$ {section.sectionTotal.toFixed(2)}
+            </p>
+          </section>
         ))}
       </div>
 

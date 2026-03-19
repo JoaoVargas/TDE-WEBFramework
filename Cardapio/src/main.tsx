@@ -36,7 +36,7 @@ function AppRoutes() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/restaurant/:id" element={<Restaurant />} />
         <Route path="/restaurant-not-found" element={<MissingRestaurant />} />
-        <Route path="/dish/:id" element={<Dish />} />
+        <Route path="/dish/:restaurant_id/:id" element={<Dish />} />
         <Route path="/dish-not-found" element={<MissingDish />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

@@ -9,7 +9,7 @@ import { getRestaurantById } from '@/services/restaurant'
 import './Dish.css'
 
 export default function Dish() {
-  const { id } = useParams()
+  const { restaurant_id: restaurantIdParam, id } = useParams()
   const { addItem, items } = useCart()
 
   const {
@@ -18,7 +18,7 @@ export default function Dish() {
     isError: isDishError,
     error: dishError,
   } = useQuery({
-    queryKey: ['dish', id],
+    queryKey: ['dish', restaurantIdParam, id],
     queryFn: ({ signal }) => {
       if (!id) {
         return Promise.resolve(null)
@@ -34,15 +34,15 @@ export default function Dish() {
     isError: isRestaurantError,
     error: restaurantError,
   } = useQuery({
-    queryKey: ['restaurant', dish?.restaurantId],
+    queryKey: ['restaurant', restaurantIdParam],
     queryFn: ({ signal }) => {
-      if (!dish?.restaurantId) {
+      if (!restaurantIdParam) {
         return Promise.resolve(null)
       }
 
-      return getRestaurantById(dish.restaurantId, signal)
+      return getRestaurantById(restaurantIdParam, signal)
     },
-    enabled: Boolean(dish?.restaurantId),
+    enabled: Boolean(restaurantIdParam),
   })
 
   useEffect(() => {
@@ -52,17 +52,21 @@ export default function Dish() {
 
     console.warn('[dish:route] state', {
       id,
+      routeRestaurantId: restaurantIdParam,
       isLoading,
       isDishError,
       dishError,
       dishId: dish?.id ?? null,
       relatedRestaurantId: dish?.restaurantId ?? null,
+      matchesRouteRestaurant:
+        Boolean(restaurantIdParam) && dish?.restaurantId === restaurantIdParam,
       isRestaurantError,
       restaurantError,
       hasRestaurant: Boolean(restaurant),
     })
   }, [
     id,
+    restaurantIdParam,
     isLoading,
     isDishError,
     dishError,
@@ -73,13 +77,16 @@ export default function Dish() {
     restaurant,
   ])
 
-  const itemInCart = items.find((item) => item.dish.id === dish?.id)
+  const itemInCart = items.find(
+    (item) =>
+      item.dish.id === dish?.id && item.dish.restaurantId === restaurantIdParam,
+  )
 
   if (isLoading) {
     return <p className="dish-page__state">Carregando prato...</p>
   }
 
-  if (!dish) {
+  if (!dish || !restaurantIdParam || dish.restaurantId !== restaurantIdParam) {
     return <Navigate to="/dish-not-found" replace />
   }
 

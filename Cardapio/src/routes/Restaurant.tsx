@@ -135,7 +135,7 @@ export default function Restaurant() {
                   Adicionar
                 </button>
 
-                <Link to={`/dish/${dish.id}`}>Detalhes</Link>
+                <Link to={`/dish/${restaurant.id}/${dish.id}`}>Detalhes</Link>
               </div>
             </div>
           </article>
