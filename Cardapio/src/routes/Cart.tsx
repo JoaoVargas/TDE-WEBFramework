@@ -7,6 +7,7 @@ import type { CartItem, CartSection } from '../types/cart'
 import { useRestaurant } from '@/contexts/restaurantContext'
 
 import './Cart.css'
+import CartEmpty from '@/components/Cart/CartEmpty'
 
 export default function Cart() {
   const {
@@ -43,13 +44,7 @@ export default function Cart() {
     )
 
   if (items.length === 0) {
-    return (
-      <section className="cart-page cart-page--empty">
-        <h1>Seu carrinho está vazio</h1>
-        <p>Adicione pratos de qualquer unidade para continuar.</p>
-        <Link to="/">Explorar restaurantes</Link>
-      </section>
-    )
+    return <CartEmpty />
   }
 
   return (
