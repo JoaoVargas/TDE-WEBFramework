@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import AppButton from '@/components/AppButton'
 import { useCart } from '@/contexts/cartContext'
 import type { CartItem, CartSection } from '../types/cart'
 import { useRestaurant } from '@/contexts/restaurantContext'
@@ -57,13 +58,14 @@ export default function Cart() {
           <p>{totalItems} item(ns) selecionado(s)</p>
         </div>
 
-        <button
-          type="button"
-          className="app-button cart-page__clear-button"
+        <AppButton
+          status="danger"
+          size="md"
+          className="cart-page__clear-button"
           onClick={clearCart}
         >
           Limpar carrinho
-        </button>
+        </AppButton>
       </header>
 
       <div className="cart-page__list">
@@ -71,13 +73,14 @@ export default function Cart() {
           <section className="cart-section" key={section.restaurantId}>
             <header className="cart-section__header">
               <h2>{section.restaurantName}</h2>
-              <button
-                type="button"
-                className="app-button cart-section__clear-button"
+              <AppButton
+                status="danger"
+                size="sm"
+                className="cart-section__clear-button"
                 onClick={() => clearRestaurantCart(section.restaurantId)}
               >
                 Limpar unidade
-              </button>
+              </AppButton>
             </header>
 
             <div className="cart-section__items">
@@ -95,9 +98,10 @@ export default function Cart() {
                   </div>
 
                   <div className="cart-item__actions">
-                    <button
-                      type="button"
-                      className="app-button cart-item__quantity-button"
+                    <AppButton
+                      size="icon"
+                      status="neutral"
+                      className="cart-item__quantity-button"
                       onClick={() =>
                         setItemQuantity(
                           item.dish.id,
@@ -107,13 +111,14 @@ export default function Cart() {
                       }
                     >
                       -
-                    </button>
+                    </AppButton>
                     <span className="cart-item__quantity-value">
                       {item.quantity}
                     </span>
-                    <button
-                      type="button"
-                      className="app-button cart-item__quantity-button"
+                    <AppButton
+                      size="icon"
+                      status="neutral"
+                      className="cart-item__quantity-button"
                       onClick={() =>
                         setItemQuantity(
                           item.dish.id,
@@ -123,16 +128,17 @@ export default function Cart() {
                       }
                     >
                       +
-                    </button>
-                    <button
-                      type="button"
-                      className="app-button cart-item__remove-button"
+                    </AppButton>
+                    <AppButton
+                      status="danger"
+                      size="sm"
+                      className="cart-item__remove-button"
                       onClick={() =>
                         removeItem(item.dish.id, section.restaurantId)
                       }
                     >
                       Remover
-                    </button>
+                    </AppButton>
                   </div>
                 </article>
               ))}

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import type { Dish } from '@/types/dish'
+import AppButton from '@/components/AppButton'
 
 import './DishCard.css'
 
@@ -24,13 +25,7 @@ export default function DishCard({ dish, restaurantId, onAdd }: DishCardProps) {
         </div>
 
         <div className="dish-card__actions">
-          <button
-            type="button"
-            className="app-button"
-            onClick={() => onAdd(dish)}
-          >
-            Adicionar
-          </button>
+          <AppButton onClick={() => onAdd(dish)}>Adicionar</AppButton>
 
           <Link to={`/dish/${restaurantId}/${dish.id}`}>Detalhes</Link>
         </div>

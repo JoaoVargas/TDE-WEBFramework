@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 
+import AppButton from '@/components/AppButton'
 import { useCart } from '@/contexts/cartContext'
 import { getDishById } from '@/services/dish'
 import { getRestaurantById } from '@/services/restaurant'
@@ -107,13 +108,9 @@ export default function Dish() {
           <span>{dish.prepTime}</span>
         </div>
 
-        <button
-          type="button"
-          className="app-button"
-          onClick={() => addItem(dish)}
-        >
+        <AppButton status="primary" size="md" onClick={() => addItem(dish)}>
           Adicionar ao carrinho
-        </button>
+        </AppButton>
 
         {itemInCart ? (
           <p className="dish-page__in-cart">
