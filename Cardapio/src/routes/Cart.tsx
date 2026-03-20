@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
-import AppButton from '@/components/AppButton'
+import CartPageFooter from '@/components/Cart/CartPageFooter'
+import CartPageHeader from '@/components/Cart/CartPageHeader'
+import CartRestaurantSection from '@/components/Cart/CartRestaurantSection'
 import { useCart } from '@/contexts/cartContext'
 import type { CartItem, CartSection } from '../types/cart'
 import { useRestaurant } from '@/contexts/restaurantContext'
@@ -52,108 +54,21 @@ export default function Cart() {
 
   return (
     <section className="cart-page">
-      <header className="cart-page__header">
-        <div>
-          <h1>Carrinho</h1>
-          <p>{totalItems} item(ns) selecionado(s)</p>
-        </div>
-
-        <AppButton
-          status="danger"
-          size="md"
-          className="cart-page__clear-button"
-          onClick={clearCart}
-        >
-          Limpar carrinho
-        </AppButton>
-      </header>
+      <CartPageHeader totalItems={totalItems} onClearCart={clearCart} />
 
       <div className="cart-page__list">
         {sections.map((section) => (
-          <section className="cart-section" key={section.restaurantId}>
-            <header className="cart-section__header">
-              <h2>{section.restaurantName}</h2>
-              <AppButton
-                status="danger"
-                size="sm"
-                className="cart-section__clear-button"
-                onClick={() => clearRestaurantCart(section.restaurantId)}
-              >
-                Limpar unidade
-              </AppButton>
-            </header>
-
-            <div className="cart-section__items">
-              {section.items.map((item) => (
-                <article
-                  className="cart-item"
-                  key={`${section.restaurantId}-${item.dish.id}`}
-                >
-                  <img src={item.dish.imageUrl} alt={item.dish.name} />
-
-                  <div className="cart-item__content">
-                    <h3>{item.dish.name}</h3>
-                    <p>{item.dish.description}</p>
-                    <strong>R$ {item.dish.price.toFixed(2)}</strong>
-                  </div>
-
-                  <div className="cart-item__actions">
-                    <AppButton
-                      size="icon"
-                      status="neutral"
-                      className="cart-item__quantity-button"
-                      onClick={() =>
-                        setItemQuantity(
-                          item.dish.id,
-                          item.quantity - 1,
-                          section.restaurantId,
-                        )
-                      }
-                    >
-                      -
-                    </AppButton>
-                    <span className="cart-item__quantity-value">
-                      {item.quantity}
-                    </span>
-                    <AppButton
-                      size="icon"
-                      status="neutral"
-                      className="cart-item__quantity-button"
-                      onClick={() =>
-                        setItemQuantity(
-                          item.dish.id,
-                          item.quantity + 1,
-                          section.restaurantId,
-                        )
-                      }
-                    >
-                      +
-                    </AppButton>
-                    <AppButton
-                      status="danger"
-                      size="sm"
-                      className="cart-item__remove-button"
-                      onClick={() =>
-                        removeItem(item.dish.id, section.restaurantId)
-                      }
-                    >
-                      Remover
-                    </AppButton>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <p className="cart-section__total">
-              Subtotal da unidade: R$ {section.sectionTotal.toFixed(2)}
-            </p>
-          </section>
+          <CartRestaurantSection
+            key={section.restaurantId}
+            section={section}
+            clearRestaurantCart={clearRestaurantCart}
+            setItemQuantity={setItemQuantity}
+            removeItem={removeItem}
+          />
         ))}
       </div>
 
-      <footer className="cart-page__footer">
-        <p>Total: R$ {totalPrice.toFixed(2)}</p>
-      </footer>
+      <CartPageFooter totalPrice={totalPrice} />
     </section>
   )
 }

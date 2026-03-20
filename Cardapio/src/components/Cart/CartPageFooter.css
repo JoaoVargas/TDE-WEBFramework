@@ -1,0 +1,9 @@
+.cart-page__footer {
+  margin-left: auto;
+  border: 1px solid #ddd5cb;
+  border-radius: 0.8rem;
+  background: #fff;
+  padding: 0.65rem 0.9rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}

@@ -1,0 +1,27 @@
+.cart-page__header {
+  border: 1px solid #ddd5cb;
+  border-radius: 1rem;
+  background: #fff;
+  padding: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.cart-page__header h1 {
+  margin: 0;
+}
+
+.cart-page__header p {
+  margin: 0.3rem 0 0;
+  color: #5f6962;
+}
+
+.cart-page__header button {
+  background: #8f3d37;
+}
+
+.cart-page__clear-button {
+  white-space: nowrap;
+}
