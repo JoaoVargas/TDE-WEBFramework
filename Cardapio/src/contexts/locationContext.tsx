@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import React, {
   createContext,
   useCallback,
@@ -6,18 +7,19 @@ import React, {
   useState,
 } from 'react'
 import type { ReactNode } from 'react'
-import { useQuery } from '@tanstack/react-query'
+
+import { useRestaurant } from '@/contexts/restaurantContext'
 
 import {
   getCurrentCoordinates,
   reverseGeocode,
 } from '@/services/locationService'
-import { useRestaurant } from '@/contexts/restaurantContext'
 import { findClosestRestaurant } from '@/services/restaurant'
-import { calculateDistanceInKm } from '@/utils/distance'
 
 import type { GeoPoint } from '@/types/location'
 import type { FetchStatus } from '@/types/status'
+
+import { calculateDistanceInKm } from '@/utils/distance'
 
 interface LocationContextType {
   location: GeoPoint | null

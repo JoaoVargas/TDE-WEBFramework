@@ -1,7 +1,9 @@
+import { mockRequest } from '@/services/mockApi'
+
 import type { Restaurant } from '@/types/restaurant'
 import type { GeoPoint } from '@/types/location'
+
 import { calculateDistanceInKm } from '@/utils/distance'
-import { mockRequest } from '@/services/mockApi'
 
 const RESTAURANTS: Restaurant[] = [
   {

@@ -7,8 +7,9 @@ import React, {
   useState,
 } from 'react'
 import type { ReactNode } from 'react'
+
 import type { Dish } from '@/types/dish'
-import type { CartContextType, CartItem, CartState } from '../types/cart'
+import type { CartContextType, CartItem, CartState } from '@/types/cart'
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 

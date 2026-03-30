@@ -1,12 +1,14 @@
+import CartEmpty from '@/components/Cart/CartEmpty/CartEmpty'
 import CartPageFooter from '@/components/Cart/CartPageFooter/CartPageFooter'
 import CartPageHeader from '@/components/Cart/CartPageHeader/CartPageHeader'
 import CartRestaurantSection from '@/components/Cart/CartRestaurantSection/CartRestaurantSection'
+
 import { useCart } from '@/contexts/cartContext'
-import type { CartItem, CartSection } from '@/types/cart'
 import { useRestaurant } from '@/contexts/restaurantContext'
 
+import type { CartItem, CartSection } from '@/types/cart'
+
 import './Cart.css'
-import CartEmpty from '@/components/Cart/CartEmpty/CartEmpty'
 
 export default function Cart() {
   const {

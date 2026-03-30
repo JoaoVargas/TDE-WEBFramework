@@ -1,6 +1,7 @@
 import AppButton from '@/components/AppButton/AppButton'
+import CartItemCard from '@/components/Cart/CartItemCard/CartItemCard'
+
 import type { CartSection } from '@/types/cart'
-import CartItemCard from './CartItemCard/CartItemCard'
 
 import './CartRestaurantSection.css'
 

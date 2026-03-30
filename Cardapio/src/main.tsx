@@ -3,13 +3,13 @@ import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
-import BaseLayout from '@/components/BaseLayout'
+import BaseLayout from '@/components/BaseLayout/BaseLayout'
 
 import { CartContextProvider } from '@/contexts/cartContext'
 import { LocationContextProvider } from '@/contexts/locationContext'
 import { RestaurantContextProvider } from '@/contexts/restaurantContext'
 
-import Cart from '@/routes/Cart'
+import Cart from '@/routes/Cart/Cart'
 import Dish from '@/routes/Dish/Dish'
 import Home from '@/routes/Home/Home'
 import MissingDish from '@/routes/MissingDish/MissingDish'

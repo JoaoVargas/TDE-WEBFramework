@@ -1,8 +1,10 @@
+import { useQuery } from '@tanstack/react-query'
 import React, { createContext, useContext, useEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
-import type { Restaurant } from '../types/restaurant'
-import { listRestaurants } from '../services/restaurant'
-import { useQuery } from '@tanstack/react-query'
+
+import { listRestaurants } from '@/services/restaurant'
+
+import type { Restaurant } from '@/types/restaurant'
 
 interface RestaurantContextType {
   restaurants: Restaurant[]

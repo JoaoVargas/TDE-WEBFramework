@@ -1,5 +1,7 @@
 import { mockRequest } from '@/services/mockApi'
-import type { GeoPoint } from '../types/location'
+
+import type { GeoPoint } from '@/types/location'
+
 import { calculateDistanceInKm } from '@/utils/distance'
 
 const CURITIBA_CENTER: GeoPoint = {

@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
-import RestaurantCard from '@/components/RestaurantCard'
+
+import RestaurantCard from '@/components/RestaurantCard/RestaurantCard'
+
 import { useLocation } from '@/contexts/locationContext'
 import { useRestaurant } from '@/contexts/restaurantContext'
 

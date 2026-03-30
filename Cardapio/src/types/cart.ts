@@ -1,4 +1,4 @@
-import type { Dish } from './dish'
+import type { Dish } from '@/types/dish'
 
 export interface CartItem {
   dish: Dish

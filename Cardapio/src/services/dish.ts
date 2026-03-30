@@ -1,5 +1,6 @@
-import type { Dish } from '@/types/dish'
 import { mockRequest } from '@/services/mockApi'
+
+import type { Dish } from '@/types/dish'
 
 const DISHES: Dish[] = [
   {

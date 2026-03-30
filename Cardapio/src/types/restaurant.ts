@@ -1,4 +1,4 @@
-import type { GeoPoint } from './location'
+import type { GeoPoint } from '@/types/location'
 
 export interface Restaurant {
   id: string
