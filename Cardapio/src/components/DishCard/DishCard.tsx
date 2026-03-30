@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 import type { Dish } from '@/types/dish'
-import AppButton from '@/components/AppButton'
+import AppButton from '@/components/AppButton/AppButton'
 
 import './DishCard.css'
 

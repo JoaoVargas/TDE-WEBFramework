@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 
-import AppButton from '@/components/AppButton'
+import AppButton from '@/components/AppButton/AppButton'
 import { useCart } from '@/contexts/cartContext'
 import { getDishById } from '@/services/dish'
 import { getRestaurantById } from '@/services/restaurant'

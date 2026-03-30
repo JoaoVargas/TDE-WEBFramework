@@ -1,13 +1,12 @@
-import { Link } from 'react-router-dom'
-import CartPageFooter from '@/components/Cart/CartPageFooter'
-import CartPageHeader from '@/components/Cart/CartPageHeader'
-import CartRestaurantSection from '@/components/Cart/CartRestaurantSection'
+import CartPageFooter from '@/components/Cart/CartPageFooter/CartPageFooter'
+import CartPageHeader from '@/components/Cart/CartPageHeader/CartPageHeader'
+import CartRestaurantSection from '@/components/Cart/CartRestaurantSection/CartRestaurantSection'
 import { useCart } from '@/contexts/cartContext'
-import type { CartItem, CartSection } from '../types/cart'
+import type { CartItem, CartSection } from '@/types/cart'
 import { useRestaurant } from '@/contexts/restaurantContext'
 
 import './Cart.css'
-import CartEmpty from '@/components/Cart/CartEmpty'
+import CartEmpty from '@/components/Cart/CartEmpty/CartEmpty'
 
 export default function Cart() {
   const {

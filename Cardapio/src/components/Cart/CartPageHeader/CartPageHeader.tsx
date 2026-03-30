@@ -1,4 +1,4 @@
-import AppButton from '@/components/AppButton'
+import AppButton from '@/components/AppButton/AppButton'
 
 import './CartPageHeader.css'
 

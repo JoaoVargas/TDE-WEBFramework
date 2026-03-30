@@ -1,4 +1,4 @@
-import type { Restaurant } from '../types/restaurant'
+import type { Restaurant } from '@/types/restaurant'
 
 import './RestaurantCard.css'
 

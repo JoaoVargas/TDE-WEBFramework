@@ -10,11 +10,11 @@ import { LocationContextProvider } from '@/contexts/locationContext'
 import { RestaurantContextProvider } from '@/contexts/restaurantContext'
 
 import Cart from '@/routes/Cart'
-import Dish from '@/routes/Dish'
-import Home from '@/routes/Home'
-import MissingDish from '@/routes/MissingDish'
-import MissingRestaurant from '@/routes/MissingRestaurant'
-import Restaurant from '@/routes/Restaurant'
+import Dish from '@/routes/Dish/Dish'
+import Home from '@/routes/Home/Home'
+import MissingDish from '@/routes/MissingDish/MissingDish'
+import MissingRestaurant from '@/routes/MissingRestaurant/MissingRestaurant'
+import Restaurant from '@/routes/Restaurant/Restaurant'
 
 import './styles.css'
 

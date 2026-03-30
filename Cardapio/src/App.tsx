@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from './routes/Home'
+import Home from './routes/Home/Home'
 import { RestaurantContextProvider } from '@/contexts/restaurantContext'
 import { LocationContextProvider } from '@/contexts/locationContext'
 import { CartContextProvider } from '@/contexts/cartContext'
 import BaseLayout from './components/BaseLayout'
 import Cart from './routes/Cart'
-import Restaurant from './routes/Restaurant'
-import Dish from './routes/Dish'
+import Restaurant from './routes/Restaurant/Restaurant'
+import Dish from './routes/Dish/Dish'
 
 export default function App() {
   return (
