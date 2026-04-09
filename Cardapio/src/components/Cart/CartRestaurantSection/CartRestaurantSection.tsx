@@ -4,6 +4,7 @@ import CartItemCard from '@/components/Cart/CartItemCard/CartItemCard'
 import type { CartSection } from '@/types/cart'
 
 import './CartRestaurantSection.css'
+import { useAlert } from '@/contexts/alertContext'
 
 interface CartRestaurantSectionProps {
   section: CartSection
@@ -22,6 +23,26 @@ export default function CartRestaurantSection({
   setItemQuantity,
   removeItem,
 }: CartRestaurantSectionProps) {
+  const { openAlert, closeAlert } = useAlert()
+
+  function handleClearRestaurantCart() {
+    openAlert({
+      title: 'Limpar carrinho',
+      description:
+        'Tem certeza que deseja limpar todos os pedidos deste restaurante?',
+      type: 'danger',
+      onCancel: () => {
+        closeAlert()
+      },
+      onCancelText: 'Cancelar',
+      onAction: () => {
+        clearRestaurantCart(section.restaurantId)
+        closeAlert()
+      },
+      onActionText: 'Limpar unidade',
+    })
+  }
+
   return (
     <section className="cart-section">
       <header className="cart-section__header">
@@ -30,7 +51,7 @@ export default function CartRestaurantSection({
           status="danger"
           size="sm"
           className="cart-section__clear-button"
-          onClick={() => clearRestaurantCart(section.restaurantId)}
+          onClick={() => handleClearRestaurantCart()}
         >
           Limpar unidade
         </AppButton>

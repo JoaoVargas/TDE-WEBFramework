@@ -8,6 +8,7 @@ import BaseLayout from '@/components/BaseLayout/BaseLayout'
 import { CartContextProvider } from '@/contexts/cartContext'
 import { LocationContextProvider } from '@/contexts/locationContext'
 import { RestaurantContextProvider } from '@/contexts/restaurantContext'
+import { AlertContextProvider } from './contexts/alertContext'
 
 import Cart from '@/routes/Cart/Cart'
 import Dish from '@/routes/Dish/Dish'
@@ -47,13 +48,15 @@ function AppRoutes() {
 function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <CartContextProvider>
-        <RestaurantContextProvider>
-          <LocationContextProvider>
-            <BrowserRouter>{children}</BrowserRouter>
-          </LocationContextProvider>
-        </RestaurantContextProvider>
-      </CartContextProvider>
+      <AlertContextProvider>
+        <CartContextProvider>
+          <RestaurantContextProvider>
+            <LocationContextProvider>
+              <BrowserRouter>{children}</BrowserRouter>
+            </LocationContextProvider>
+          </RestaurantContextProvider>
+        </CartContextProvider>
+      </AlertContextProvider>
     </QueryClientProvider>
   )
 }
