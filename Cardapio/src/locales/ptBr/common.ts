@@ -17,6 +17,12 @@ const commonPtBr = {
     clear: 'Limpar carrinho',
   },
   confirm: 'Confirmar',
+  locale_switcher: {
+    current_language: 'Idioma atual {{language}}',
+    select_language: 'Selecionar idioma',
+    pt_br: 'Português (Brasil)',
+    en: 'Inglês',
+  },
   restaurant: {
     self: 'restaurante',
     self_capitalized: 'Restaurante',

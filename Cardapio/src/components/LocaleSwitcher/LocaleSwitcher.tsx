@@ -8,13 +8,13 @@ import './LocaleSwitcher.css'
 
 type LocaleOption = {
   value: AppLanguage
-  label: string
+  labelKey: 'locale_switcher.pt_br' | 'locale_switcher.en'
   flag: string
 }
 
 const localeOptions: LocaleOption[] = [
-  { value: 'ptBr', label: 'Português (BR)', flag: '🇧🇷' },
-  { value: 'en', label: 'English', flag: '🇺🇸' },
+  { value: 'ptBr', labelKey: 'locale_switcher.pt_br', flag: '🇧🇷' },
+  { value: 'en', labelKey: 'locale_switcher.en', flag: '🇺🇸' },
 ]
 
 function resolveLanguage(language: string): AppLanguage {
@@ -26,26 +26,16 @@ function resolveLanguage(language: string): AppLanguage {
 }
 
 export default function LocaleSwitcher() {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [activeLanguage, setActiveLanguage] = useState<AppLanguage>(
-    resolveLanguage(i18n.resolvedLanguage ?? i18n.language),
+
+  const activeLanguage = useMemo(
+    () => resolveLanguage(i18n.resolvedLanguage ?? i18n.language),
+    [i18n.language, i18n.resolvedLanguage],
   )
 
   const wrapperRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    function handleI18nLanguageChanged(language: string) {
-      setActiveLanguage(resolveLanguage(language))
-    }
-
-    i18n.on('languageChanged', handleI18nLanguageChanged)
-
-    return () => {
-      i18n.off('languageChanged', handleI18nLanguageChanged)
-    }
-  }, [i18n])
 
   useEffect(() => {
     if (!isOpen) {
@@ -96,7 +86,9 @@ export default function LocaleSwitcher() {
         onClick={() => setIsOpen((currentOpen) => !currentOpen)}
         aria-expanded={isOpen}
         aria-haspopup="menu"
-        aria-label={`Current language ${currentOption.label}`}
+        aria-label={t('locale_switcher.current_language', {
+          language: t(currentOption.labelKey),
+        })}
       >
         <span className="locale-switcher__trigger-content">
           <span aria-hidden="true">{currentOption.flag}</span>
@@ -110,7 +102,7 @@ export default function LocaleSwitcher() {
         <ul
           className="locale-switcher__menu"
           role="menu"
-          aria-label="Select language"
+          aria-label={t('locale_switcher.select_language')}
         >
           {localeOptions.map((option) => (
             <li
@@ -133,7 +125,7 @@ export default function LocaleSwitcher() {
                 >
                   {option.flag}
                 </span>
-                <span>{option.label}</span>
+                <span>{t(option.labelKey)}</span>
               </button>
             </li>
           ))}

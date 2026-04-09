@@ -16,6 +16,12 @@ const commonEn = {
     clear: 'Clear cart',
   },
   confirm: 'Confirm',
+  locale_switcher: {
+    current_language: 'Current language {{language}}',
+    select_language: 'Select language',
+    pt_br: 'Portuguese (Brazil)',
+    en: 'English',
+  },
   restaurant: {
     self: 'restaurant',
     self_capitalized: 'Restaurant',
