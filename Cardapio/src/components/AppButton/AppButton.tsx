@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import './AppButton.css'
 
 type AppButtonType = 'button' | 'submit' | 'reset'
-type AppButtonStatus = 'primary' | 'secondary' | 'danger' | 'neutral'
+type AppButtonStatus = 'primary' | 'secondary' | 'danger' | 'neutral' | 'basic'
 type AppButtonSize = 'sm' | 'md' | 'lg' | 'icon'
 type AppButtonShape = 'default' | 'pill'
 

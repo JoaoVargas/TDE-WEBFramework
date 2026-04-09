@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 
 import { useCart } from '@/contexts/cartContext'
+import LocaleSwitcher from '@/components/LocaleSwitcher/LocaleSwitcher'
 
 import './Navbar.css'
 import { useCallback } from 'react'
@@ -48,6 +49,8 @@ export default function Navbar() {
               end={item.end}
             />
           ))}
+
+          <LocaleSwitcher />
         </nav>
       </div>
     </header>

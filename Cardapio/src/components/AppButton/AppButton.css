@@ -35,6 +35,13 @@
   background: #56645b;
 }
 
+.app-button--basic {
+  background: #ffffff;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #ccc;
+}
+
 .app-button--sm {
   padding: 0.4rem 0.65rem;
   font-size: 0.9rem;

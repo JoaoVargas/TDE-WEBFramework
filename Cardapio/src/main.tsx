@@ -17,6 +17,7 @@ import MissingDish from '@/routes/MissingDish/MissingDish'
 import MissingRestaurant from '@/routes/MissingRestaurant/MissingRestaurant'
 import Restaurant from '@/routes/Restaurant/Restaurant'
 
+import '@/locales/i18n'
 import './styles.css'
 
 const queryClient = new QueryClient({
