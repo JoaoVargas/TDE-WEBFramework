@@ -2,6 +2,7 @@ import AppButton from '@/components/AppButton/AppButton'
 
 import './CartPageHeader.css'
 import { useAlert } from '@/contexts/alertContext'
+import { useTranslation } from 'react-i18next'
 
 interface CartPageHeaderProps {
   totalItems: number
@@ -13,22 +14,22 @@ export default function CartPageHeader({
   onClearCart,
 }: CartPageHeaderProps) {
   const { openAlert, closeAlert } = useAlert()
+  const { t } = useTranslation()
 
   function handleClearRestaurantCart() {
     openAlert({
-      title: 'Limpar carrinho',
-      description:
-        'Tem certeza que deseja limpar todos os pedidos no seu carrinho?',
+      title: t('alert.clear_cart.title'),
+      description: t('alert.clear_cart.description'),
       type: 'danger',
       onCancel: () => {
         closeAlert()
       },
-      onCancelText: 'Cancelar',
+      onCancelText: t('alert.clear_cart.cancel_text'),
       onAction: () => {
         onClearCart()
         closeAlert()
       },
-      onActionText: 'Limpar carrinho',
+      onActionText: t('alert.clear_cart.action_text'),
     })
   }
   return (
