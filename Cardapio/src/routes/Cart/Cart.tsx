@@ -5,15 +5,12 @@ import CartRestaurantSection from '@/components/Cart/CartRestaurantSection/CartR
 
 import { useCart } from '@/contexts/cartContext'
 import { useRestaurant } from '@/contexts/restaurantContext'
-import { useTranslation } from 'react-i18next'
 
 import type { CartItem, CartSection } from '@/types/cart'
 
 import './Cart.css'
 
 export default function Cart() {
-  const { t } = useTranslation()
-
   const {
     items,
     itemsByRestaurant,
@@ -38,11 +35,7 @@ export default function Cart() {
 
       return {
         restaurantId,
-        restaurantName:
-          restaurant?.name ??
-          t('restaurant.unit', {
-            name: restaurantId,
-          }),
+        restaurantName: restaurant?.name ?? `Unidade ${restaurantId}`,
         items: restaurantItems,
         sectionTotal,
       }

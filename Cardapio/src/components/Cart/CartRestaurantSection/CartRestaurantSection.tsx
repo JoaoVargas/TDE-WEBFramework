@@ -27,7 +27,7 @@ export default function CartRestaurantSection({
 
   function handleClearRestaurantCart() {
     openAlert({
-      title: 'Limpar carrinho',
+      title: 'Limpar unidade',
       description:
         'Tem certeza que deseja limpar todos os pedidos deste restaurante?',
       type: 'danger',
