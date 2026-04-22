@@ -1,73 +1,119 @@
-# React + TypeScript + Vite
+# !Order - Cardapio Web Framework
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicacao front-end de cardapio e pedidos, desenvolvida com React + TypeScript.
+O projeto simula uma franquia com multiplas unidades, exibindo restaurantes,
+pratos por unidade, detalhes do prato e carrinho com persistencia local.
 
-Currently, two official plugins are available:
+## Como executar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Requisitos
 
-## React Compiler
+- Node.js 20+
+- npm 10+
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Instalacao
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Ambiente de desenvolvimento
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm run dev
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Aplicacao disponivel em `http://localhost:5173`.
+
+### Build de producao
+
+```bash
+npm run build
+```
+
+### Preview do build
+
+```bash
+npm run preview
+```
+
+## Scripts
+
+- `npm run dev`: inicia servidor de desenvolvimento Vite.
+- `npm run build`: roda checagem TypeScript (`tsc -b`) e gera build de producao.
+- `npm run preview`: sobe servidor local para validar o build.
+- `npm run lint`: executa lint em todo o projeto.
+- `npm run lint:fix`: corrige problemas de lint automaticamente quando possivel.
+- `npm run format`: formata arquivos com Prettier.
+- `npm run format:check`: valida formatacao sem alterar arquivos.
+
+## Estrutura do projeto
+
+```text
+src/
+	components/   # componentes visuais e compostos de UI
+	contexts/     # estado global (carrinho, localizacao, restaurantes, alerta)
+	routes/       # paginas ligadas ao React Router
+	services/     # acesso aos dados mock e regras de servicos
+	types/        # contratos TypeScript
+	utils/        # utilitarios (ex.: calculo de distancia)
+```
+
+## Arquitetura (resumo)
+
+### Providers principais
+
+Em `src/main.tsx`, a arvore de providers segue esta ordem:
+
+1. `QueryClientProvider`
+2. `AlertContextProvider`
+3. `CartContextProvider`
+4. `RestaurantContextProvider`
+5. `LocationContextProvider`
+6. `BrowserRouter`
+
+### Roteamento
+
+Rotas registradas:
+
+- `/`: Home
+- `/cart`: Carrinho
+- `/restaurant/:id`: Restaurante
+- `/dish/:restaurant_id/:id`: Prato
+- `/restaurant-not-found`: Restaurante nao encontrado
+- `/dish-not-found`: Prato nao encontrado
+- `*`: redireciona para `/`
+
+### Estado e dados
+
+- Restaurantes e pratos usam TanStack Query.
+- Localizacao usa geolocalizacao do navegador, com fallback seguro.
+- Distancia e "unidade mais proxima" sao calculadas no cliente.
+- Carrinho persiste no `localStorage` com chave `cardapio-cart-v2`.
+
+## Fonte dos dados
+
+Atualmente o projeto usa dados mock locais:
+
+- `src/services/restaurant.ts`
+- `src/services/dish.ts`
+- `src/services/locationService.ts`
+
+As requisicoes passam por `src/services/mockApi.ts`, que simula latencia,
+suporte a `AbortSignal` e logs de debug em ambiente de desenvolvimento.
+
+## Qualidade de codigo
+
+Antes de abrir PR, recomenda-se executar:
+
+```bash
+npm run lint
+npm run format:check
+```
+
+Para autocorrecao:
+
+```bash
+npm run lint:fix
+npm run format
 ```
