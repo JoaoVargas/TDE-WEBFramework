@@ -36,7 +36,8 @@ export default function Navbar() {
     <header className="app-navbar">
       <div className="app-navbar__inner">
         <NavLink to="/" className="app-navbar__brand">
-          !Order
+          <span className="app-navbar__brand-mark">!</span>
+          Order
         </NavLink>
 
         <nav className="app-navbar__links" aria-label="Main navigation">

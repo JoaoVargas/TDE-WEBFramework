@@ -13,7 +13,7 @@ import './Restaurant.css'
 
 export default function Restaurant() {
   const { id } = useParams()
-  const { addItem } = useCart()
+  const { addItem, items } = useCart()
 
   const {
     data: restaurant,
@@ -95,11 +95,20 @@ export default function Restaurant() {
         </div>
 
         <div className="restaurant-page__meta">
-          <span>{restaurant.rating.toFixed(1)} estrela(s)</span>
+          <span className="restaurant-page__rating">
+            ★ {restaurant.rating.toFixed(1)} estrela(s)
+          </span>
         </div>
       </header>
 
-      <h2 className="restaurant-page__title">Cardapio da unidade</h2>
+      <div className="restaurant-page__section-header">
+        <h2 className="restaurant-page__title">Cardápio da unidade</h2>
+        {dishes.length > 0 && (
+          <span className="restaurant-page__dish-count">
+            {dishes.length} prato(s)
+          </span>
+        )}
+      </div>
 
       {isLoadingMenu ? (
         <p className="restaurant-page__state">Carregando cardapio...</p>
@@ -110,14 +119,22 @@ export default function Restaurant() {
       ) : null}
 
       <div className="restaurant-page__grid">
-        {dishes.map((dish) => (
-          <DishCard
-            key={dish.id}
-            dish={dish}
-            restaurantId={restaurant.id}
-            onAdd={addItem}
-          />
-        ))}
+        {dishes.map((dish) => {
+          const cartItem = items.find(
+            (item) =>
+              item.dish.id === dish.id &&
+              item.dish.restaurant_id === restaurant.id,
+          )
+          return (
+            <DishCard
+              key={dish.id}
+              dish={dish}
+              restaurantId={restaurant.id}
+              onAdd={addItem}
+              quantityInCart={cartItem?.quantity ?? 0}
+            />
+          )
+        })}
       </div>
     </section>
   )

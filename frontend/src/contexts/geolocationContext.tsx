@@ -12,7 +12,7 @@ async function reverseGeocode(coords: Coords): Promise<string> {
     headers: { 'Accept-Language': 'pt-BR,pt' },
   })
   if (!res.ok) throw new Error('Reverse geocode failed')
-  const data = await res.json() as NominatimResponse
+  const data = (await res.json()) as NominatimResponse
 
   const { address } = data
   const district =

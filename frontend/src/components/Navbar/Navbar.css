@@ -2,13 +2,15 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  backdrop-filter: blur(8px);
-  background: #f7f4efd9;
-  border-bottom: 1px solid #ddd5cb;
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  background: rgba(246, 243, 235, 0.92);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 1px 16px rgba(34, 30, 20, 0.07);
 }
 
 .app-navbar__inner {
-  width: min(1120px, 92vw);
+  width: min(1200px, 92vw);
   margin: 0 auto;
   padding: 0.85rem 0;
   display: flex;
@@ -19,56 +21,86 @@
 
 .app-navbar__brand {
   text-decoration: none;
-  font-weight: 700;
-  font-size: 1.18rem;
-  letter-spacing: 0.02em;
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: opacity 0.15s ease;
+}
+
+.app-navbar__brand:hover {
+  opacity: 0.8;
+}
+
+.app-navbar__brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--brand);
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 900;
+  flex-shrink: 0;
 }
 
 .app-navbar__links {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  gap: 0.3rem;
 }
 
 .app-navbar__link {
   text-decoration: none;
   font-weight: 600;
+  font-size: 0.9rem;
   color: var(--muted);
-  border: 1px solid transparent;
-  padding: 0.45rem 0.8rem;
-  border-radius: 999px;
+  padding: 0.48rem 0.9rem;
+  border-radius: var(--radius-pill);
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.45rem;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
-.app-navbar__link:hover,
-.app-navbar__link.is-active {
-  border-color: #d8d3cb;
+.app-navbar__link:hover {
+  background: var(--surface-2);
   color: var(--ink);
-  background: #fff;
+}
+
+.app-navbar__link.is-active {
+  background: var(--brand-2-light);
+  color: var(--brand-2);
 }
 
 .app-navbar__cart-badge {
-  min-width: 1.35rem;
+  min-width: 1.3rem;
+  height: 1.3rem;
   text-align: center;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
+  font-weight: 700;
   color: #fff;
   background: var(--brand);
-  border-radius: 999px;
-  padding: 0.15rem 0.38rem;
+  border-radius: var(--radius-pill);
+  padding: 0 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 720px) {
   .app-navbar__inner {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 0.7rem 0;
   }
 
-  .app-navbar__links {
-    width: 100%;
-    justify-content: space-between;
+  .app-navbar__brand {
+    font-size: 1.15rem;
   }
 }

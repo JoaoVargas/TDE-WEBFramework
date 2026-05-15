@@ -7,7 +7,11 @@ export function useGeolocation(): GeolocationState {
     () =>
       navigator.geolocation
         ? { coords: null, error: null, loading: true }
-        : { coords: null, error: 'Geolocalização não suportada', loading: false },
+        : {
+            coords: null,
+            error: 'Geolocalização não suportada',
+            loading: false,
+          },
   )
 
   useEffect(() => {

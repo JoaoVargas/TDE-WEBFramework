@@ -100,9 +100,13 @@ export default function Dish() {
         <p className="dish-page__eyebrow">Detalhe do prato</p>
         <h1>{dish.name}</h1>
 
-        {restaurant ? <p>Restaurante: {restaurant.name}</p> : null}
+        {restaurant ? (
+          <p className="dish-page__restaurant">
+            Restaurante: {restaurant.name}
+          </p>
+        ) : null}
 
-        <p>{dish.description}</p>
+        <p className="dish-page__description">{dish.description}</p>
 
         {dish.allergies ? (
           <p className="dish-page__allergies">
@@ -111,17 +115,24 @@ export default function Dish() {
         ) : null}
 
         <div className="dish-page__meta">
-          <strong>R$ {dish.price.toFixed(2)}</strong>
-          <span>{dish.prep_time} min</span>
+          <span className="dish-page__price">R$ {dish.price.toFixed(2)}</span>
+          <span className="dish-page__prep-time">{dish.prep_time} min</span>
         </div>
 
-        <AppButton status="primary" size="md" onClick={() => addItem(dish)}>
-          Adicionar ao carrinho
-        </AppButton>
+        <div className="dish-page__add-button">
+          <AppButton
+            status="primary"
+            size="lg"
+            fullWidth
+            onClick={() => addItem(dish)}
+          >
+            Adicionar ao carrinho
+          </AppButton>
+        </div>
 
         {itemInCart ? (
           <p className="dish-page__in-cart">
-            Este item ja esta no carrinho: {itemInCart.quantity} unidade(s).
+            Este item já está no carrinho: {itemInCart.quantity} unidade(s).
           </p>
         ) : null}
       </div>

@@ -46,7 +46,7 @@ export default function CartRestaurantSection({
   return (
     <section className="cart-section">
       <header className="cart-section__header">
-        <h2>{section.restaurantName}</h2>
+        <h2 className="cart-section__name">{section.restaurantName}</h2>
         <AppButton
           status="danger"
           size="sm"

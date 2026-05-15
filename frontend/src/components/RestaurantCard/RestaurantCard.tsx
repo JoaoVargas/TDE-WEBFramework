@@ -49,13 +49,13 @@ export default function RestaurantCard({
 
       <div className="restaurant-card__content">
         <div className="restaurant-card__header">
-          <h3>{restaurant.name}</h3>
+          <h3 className="restaurant-card__name">{restaurant.name}</h3>
           <span className="restaurant-card__rating">
             ★ {restaurant.rating.toFixed(1)}
           </span>
         </div>
 
-        <p className="restaurant-card__dish">{restaurant.description}</p>
+        <p className="restaurant-card__description">{restaurant.description}</p>
 
         <p className="restaurant-card__address">{addressLine}</p>
       </div>

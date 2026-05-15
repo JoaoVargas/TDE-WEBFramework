@@ -1,9 +1,9 @@
 .cart-page {
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .cart-page__list {
   display: grid;
-  gap: 0.8rem;
+  gap: 1rem;
 }

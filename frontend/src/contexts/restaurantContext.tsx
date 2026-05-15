@@ -61,7 +61,7 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
   const { coords: userCoords } = useGeolocationContext()
 
   const { distances, closestId } = useMemo(() => {
-    if (!userCoords) return { distances: {} as Record<string, number>, closestId: null }
+    if (!userCoords) return { distances: {}, closestId: null }
 
     const map: Record<string, number> = {}
     let minDist = Infinity
@@ -86,7 +86,13 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
   }, [userCoords, restaurants])
 
   const values: RestaurantContextType = useMemo(
-    () => ({ restaurants, restaurantsLoading, restaurantsError, distances, closestId }),
+    () => ({
+      restaurants,
+      restaurantsLoading,
+      restaurantsError,
+      distances,
+      closestId,
+    }),
     [restaurants, restaurantsLoading, restaurantsError, distances, closestId],
   )
 

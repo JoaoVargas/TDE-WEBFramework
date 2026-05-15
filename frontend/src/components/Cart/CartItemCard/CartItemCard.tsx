@@ -87,23 +87,25 @@ export default function CartItemCard({
       </div>
 
       <div className="cart-item__actions">
-        <AppButton
-          size="icon"
-          status="neutral"
-          className="cart-item__quantity-button"
-          onClick={() => handleDecreaseQuantity()}
-        >
-          -
-        </AppButton>
-        <span className="cart-item__quantity-value">{item.quantity}</span>
-        <AppButton
-          size="icon"
-          status="neutral"
-          className="cart-item__quantity-button"
-          onClick={() => handleIncreaseQuantity()}
-        >
-          +
-        </AppButton>
+        <div className="cart-item__quantity-row">
+          <AppButton
+            size="icon"
+            status="neutral"
+            className="cart-item__quantity-button"
+            onClick={() => handleDecreaseQuantity()}
+          >
+            −
+          </AppButton>
+          <span className="cart-item__quantity-value">{item.quantity}</span>
+          <AppButton
+            size="icon"
+            status="neutral"
+            className="cart-item__quantity-button"
+            onClick={() => handleIncreaseQuantity()}
+          >
+            +
+          </AppButton>
+        </div>
         <AppButton
           status="danger"
           size="sm"
