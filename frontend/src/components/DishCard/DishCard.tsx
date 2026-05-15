@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 
 import AppButton from '@/components/AppButton/AppButton'
 
+import { useAlert } from '@/contexts/alertContext'
+
 import type { Dish } from '@/types/dish'
 
 import './DishCard.css'
@@ -19,8 +21,22 @@ export default function DishCard({
   onAdd,
   quantityInCart = 0,
 }: DishCardProps) {
+  const { openAlert } = useAlert()
+
+  function handleAdd() {
+    if (!dish.on_stock) {
+      openAlert({
+        title: 'Prato esgotado',
+        description: `"${dish.name}" não está disponível no momento. Tente novamente mais tarde.`,
+        onActionText: 'Ok',
+      })
+      return
+    }
+    onAdd(dish)
+  }
+
   return (
-    <article className="dish-card">
+    <article className={`dish-card${!dish.on_stock ? ' dish-card--out-of-stock' : ''}`}>
       <Link
         to={`/dish/${restaurantId}/${dish.id}`}
         className="dish-card__body"
@@ -36,7 +52,11 @@ export default function DishCard({
             <div className="dish-card__image dish-card__image--placeholder" />
           )}
 
-          {quantityInCart > 0 && (
+          {!dish.on_stock && (
+            <span className="dish-card__stock-badge">Esgotado</span>
+          )}
+
+          {dish.on_stock && quantityInCart > 0 && (
             <span className="dish-card__qty-pill">{quantityInCart}</span>
           )}
         </div>
@@ -52,8 +72,8 @@ export default function DishCard({
       </Link>
 
       <div className="dish-card__actions">
-        <AppButton fullWidth onClick={() => onAdd(dish)}>
-          Adicionar
+        <AppButton fullWidth onClick={handleAdd} status={!dish.on_stock ? 'neutral' : undefined}>
+          {dish.on_stock ? 'Adicionar' : 'Indisponível'}
         </AppButton>
       </div>
     </article>

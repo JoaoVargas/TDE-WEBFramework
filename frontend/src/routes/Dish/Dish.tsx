@@ -4,6 +4,7 @@ import { Navigate, useParams } from 'react-router-dom'
 
 import AppButton from '@/components/AppButton/AppButton'
 
+import { useAlert } from '@/contexts/alertContext'
 import { useCart } from '@/contexts/cartContext'
 
 import { getDishById } from '@/services/dish'
@@ -14,6 +15,7 @@ import './Dish.css'
 export default function Dish() {
   const { restaurant_id: restaurantIdParam, id } = useParams()
   const { addItem, items } = useCart()
+  const { openAlert } = useAlert()
 
   const {
     data: dish,
@@ -76,6 +78,18 @@ export default function Dish() {
       item.dish.restaurant_id === restaurantIdParam,
   )
 
+  function handleAdd() {
+    if (!dish?.on_stock) {
+      openAlert({
+        title: 'Prato esgotado',
+        description: `"${dish?.name}" não está disponível no momento. Tente novamente mais tarde.`,
+        onActionText: 'Ok',
+      })
+      return
+    }
+    if (dish) addItem(dish)
+  }
+
   if (isLoading) {
     return <p className="dish-page__state">Carregando prato...</p>
   }
@@ -86,15 +100,21 @@ export default function Dish() {
 
   return (
     <section className="dish-page">
-      {dish.thumb_image ? (
-        <img
-          className="dish-page__image"
-          src={dish.thumb_image}
-          alt={dish.name}
-        />
-      ) : (
-        <div className="dish-page__image dish-page__image--placeholder" />
-      )}
+      <div className="dish-page__media">
+        {dish.thumb_image ? (
+          <img
+            className="dish-page__image"
+            src={dish.thumb_image}
+            alt={dish.name}
+          />
+        ) : (
+          <div className="dish-page__image dish-page__image--placeholder" />
+        )}
+
+        {!dish.on_stock && (
+          <span className="dish-page__stock-badge">Esgotado</span>
+        )}
+      </div>
 
       <div className="dish-page__content">
         <p className="dish-page__eyebrow">Detalhe do prato</p>
@@ -121,16 +141,22 @@ export default function Dish() {
 
         <div className="dish-page__add-button">
           <AppButton
-            status="primary"
+            status={dish.on_stock ? 'primary' : 'neutral'}
             size="lg"
             fullWidth
-            onClick={() => addItem(dish)}
+            onClick={handleAdd}
           >
-            Adicionar ao carrinho
+            {dish.on_stock ? 'Adicionar ao carrinho' : 'Indisponível'}
           </AppButton>
         </div>
 
-        {itemInCart ? (
+        {!dish.on_stock && (
+          <p className="dish-page__out-of-stock-notice">
+            Este prato está esgotado e não pode ser adicionado ao carrinho.
+          </p>
+        )}
+
+        {dish.on_stock && itemInCart ? (
           <p className="dish-page__in-cart">
             Este item já está no carrinho: {itemInCart.quantity} unidade(s).
           </p>

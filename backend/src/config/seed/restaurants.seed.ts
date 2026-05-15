@@ -28,6 +28,7 @@ interface DishData {
   prep_time: number
   allergies: string | null
   thumb_image: string | null
+  onStock: boolean
 }
 
 const sharedDishes: DishData[] = [
@@ -38,6 +39,7 @@ const sharedDishes: DishData[] = [
     prep_time: 1,
     allergies: null,
     thumb_image: null,
+    onStock: true,
   },
   {
     name: 'Refrigerante',
@@ -47,6 +49,7 @@ const sharedDishes: DishData[] = [
     prep_time: 1,
     allergies: null,
     thumb_image: null,
+    onStock: true,
   },
   {
     name: 'Suco Natural',
@@ -54,7 +57,9 @@ const sharedDishes: DishData[] = [
     price: 12.0,
     prep_time: 5,
     allergies: null,
-    thumb_image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80',
+    thumb_image:
+      'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80',
+    onStock: false,
   },
 ]
 
@@ -86,6 +91,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'glúten, ovos, lactose',
         thumb_image:
           'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
       {
         name: 'Pizza Margherita',
@@ -96,6 +102,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'glúten, lactose',
         thumb_image:
           'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
       {
         name: 'Tiramisu',
@@ -106,6 +113,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'glúten, ovos, lactose, cafeína',
         thumb_image:
           'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
     ],
   },
@@ -136,6 +144,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'peixe, soja',
         thumb_image:
           'https://images.unsplash.com/photo-1617196034183-421b4040d366?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
       {
         name: 'Temaki de Camarão',
@@ -146,6 +155,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'crustáceos, glúten, lactose',
         thumb_image:
           'https://images.unsplash.com/photo-1559410545-0bdcd187e0a6?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
       {
         name: 'Miso Ramen',
@@ -156,6 +166,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'soja, glúten, ovos',
         thumb_image:
           'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?auto=format&fit=crop&w=400&q=80',
+    onStock: false,
       },
     ],
   },
@@ -186,6 +197,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'glúten, lactose, ovos',
         thumb_image:
           'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80',
+    onStock: false,
       },
       {
         name: 'Onion Rings',
@@ -196,6 +208,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'glúten, ovos',
         thumb_image:
           'https://images.unsplash.com/photo-1541014741259-de529411b96a?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
       {
         name: 'Milkshake de Chocolate',
@@ -206,6 +219,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'lactose',
         thumb_image:
           'https://images.unsplash.com/photo-1572490122747-3e9ad9a37f9f?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
     ],
   },
@@ -236,6 +250,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'glúten',
         thumb_image:
           'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
       {
         name: 'Nachos com Guacamole',
@@ -246,6 +261,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'lactose',
         thumb_image:
           'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
       {
         name: 'Churros com Doce de Leite',
@@ -256,6 +272,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'glúten, lactose, ovos',
         thumb_image:
           'https://images.unsplash.com/photo-1515362778563-6a8d0e44bc0b?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
     ],
   },
@@ -286,6 +303,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'glúten, peixe, lactose',
         thumb_image:
           'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
       {
         name: 'Coq au Vin',
@@ -296,6 +314,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'álcool',
         thumb_image:
           'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
       {
         name: 'Crème Brûlée',
@@ -306,6 +325,7 @@ const restaurants: RestaurantData[] = [
         allergies: 'ovos, lactose',
         thumb_image:
           'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?auto=format&fit=crop&w=400&q=80',
+    onStock: true,
       },
     ],
   },
@@ -370,8 +390,8 @@ export async function seedRestaurants(
 
     for (const dishId of sharedDishIds) {
       await conn.query(
-        'INSERT INTO restaurant_dishes (id, restaurant_id, dish_id, on_stock) VALUES (?, ?, ?, TRUE)',
-        [uuidv4(), restaurantId, dishId],
+        'INSERT INTO restaurant_dishes (id, restaurant_id, dish_id, on_stock) VALUES (?, ?, ?, ?)',
+        [uuidv4(), restaurantId, dishId, true],
       )
     }
 
@@ -390,8 +410,8 @@ export async function seedRestaurants(
         ],
       )
       await conn.query(
-        'INSERT INTO restaurant_dishes (id, restaurant_id, dish_id, on_stock) VALUES (?, ?, ?, TRUE)',
-        [uuidv4(), restaurantId, dishId],
+        'INSERT INTO restaurant_dishes (id, restaurant_id, dish_id, on_stock) VALUES (?, ?, ?, ?)',
+        [uuidv4(), restaurantId, dishId, dish.onStock],
       )
     }
   }

@@ -119,3 +119,29 @@
   padding: 0.85rem 1.1rem;
   border-top: 1px solid var(--border-light);
 }
+
+/* Out-of-stock state */
+.dish-card--out-of-stock {
+  opacity: 0.6;
+  filter: grayscale(60%);
+}
+
+.dish-card--out-of-stock:hover {
+  box-shadow: var(--shadow-sm);
+  transform: none;
+}
+
+.dish-card__stock-badge {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  padding: 0.22rem 0.65rem;
+  box-shadow: 0 2px 8px rgba(34, 30, 20, 0.35);
+}

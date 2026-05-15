@@ -93,6 +93,8 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({
   )
 
   const addItem = useCallback((dish: Dish) => {
+    if (!dish.on_stock) return
+
     setItemsByRestaurant((currentState) => {
       const restaurantItems = currentState[dish.restaurant_id] ?? []
       const found = restaurantItems.find((item) => item.dish.id === dish.id)
