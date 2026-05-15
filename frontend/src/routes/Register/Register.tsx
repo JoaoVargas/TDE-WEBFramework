@@ -18,7 +18,7 @@ const PASSWORD_RULES = [
   { label: 'Número', test: (p: string) => /[0-9]/.test(p) },
   {
     label: 'Caractere especial (!@#$%...)',
-    test: (p: string) => /[!@#$%^&*(),.?":{}|<>_\-]/.test(p),
+    test: (p: string) => /[!@#$%^&*(),.?":{}|<>_-]/.test(p),
   },
 ] as const
 
@@ -72,7 +72,7 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/', { replace: true })
+    if (isAuthenticated) void navigate('/', { replace: true })
   }, [isAuthenticated, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,7 +92,7 @@ export default function Register() {
         password,
         phone_number: phoneNumber.trim() || undefined,
       })
-      navigate('/', { replace: true })
+      void navigate('/', { replace: true })
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const msg = (err.response?.data as { error?: string })?.error
@@ -115,7 +115,7 @@ export default function Register() {
         </>
       }
     >
-      <form className="auth-form" onSubmit={handleSubmit} noValidate>
+      <form className="auth-form" onSubmit={(e) => { void handleSubmit(e) }} noValidate>
         {apiError && <p className="auth-form__error">{apiError}</p>}
 
         <FormField
@@ -200,7 +200,9 @@ export default function Register() {
               type="button"
               className="auth-form__toggle-password"
               onClick={() => setShowConfirm((v) => !v)}
-              aria-label={showConfirm ? 'Ocultar confirmação' : 'Mostrar confirmação'}
+              aria-label={
+                showConfirm ? 'Ocultar confirmação' : 'Mostrar confirmação'
+              }
             >
               {showConfirm ? 'Ocultar' : 'Ver'}
             </button>

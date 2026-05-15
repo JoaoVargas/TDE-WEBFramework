@@ -25,7 +25,11 @@
   right: -50px;
   width: 240px;
   height: 240px;
-  background: radial-gradient(circle, rgba(127, 32, 32, 0.08) 0%, transparent 68%);
+  background: radial-gradient(
+    circle,
+    rgba(127, 32, 32, 0.08) 0%,
+    transparent 68%
+  );
   pointer-events: none;
 }
 
@@ -150,9 +154,9 @@
 }
 
 .home-page__state--error {
-  border-color: #D4A8A8;
-  color: #7F2020;
-  background: #FDF5F5;
+  border-color: #d4a8a8;
+  color: #7f2020;
+  background: #fdf5f5;
 }
 
 .home-page__grid {

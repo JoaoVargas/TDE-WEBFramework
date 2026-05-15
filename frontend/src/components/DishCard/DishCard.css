@@ -39,7 +39,7 @@
 
 .dish-card__image--placeholder {
   height: 185px;
-  background: linear-gradient(135deg, #EDE0D4 0%, #D8DEC8 100%);
+  background: linear-gradient(135deg, #ede0d4 0%, #d8dec8 100%);
 }
 
 /* Quantity pill — shown when dish is in cart */

@@ -34,7 +34,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/', { replace: true })
+    if (isAuthenticated) void navigate('/', { replace: true })
   }, [isAuthenticated, navigate])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -49,7 +49,7 @@ export default function Login() {
     setApiError(null)
     try {
       await login({ email, password })
-      navigate('/', { replace: true })
+      void navigate('/', { replace: true })
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const msg = (err.response?.data as { error?: string })?.error
@@ -72,7 +72,7 @@ export default function Login() {
         </>
       }
     >
-      <form className="auth-form" onSubmit={handleSubmit} noValidate>
+      <form className="auth-form" onSubmit={(e) => { void handleSubmit(e) }} noValidate>
         {apiError && <p className="auth-form__error">{apiError}</p>}
 
         <FormField

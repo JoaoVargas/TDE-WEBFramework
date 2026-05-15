@@ -2,7 +2,10 @@ import type { InputHTMLAttributes, ReactNode } from 'react'
 
 import './FormField.css'
 
-interface FormFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'id'> {
+interface FormFieldProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'id'
+> {
   id: string
   label: string
   error?: string

@@ -24,8 +24,8 @@ export default function Home() {
           <p className="home-page__eyebrow">Franquia Cardapio</p>
           <h1>Escolha sua unidade e monte seu pedido</h1>
           <p className="home-page__description">
-            Mesmo sabor, unidades diferentes. Descubra a sua favorita e comece
-            o pedido em poucos cliques.
+            Mesmo sabor, unidades diferentes. Descubra a sua favorita e comece o
+            pedido em poucos cliques.
           </p>
 
           {locationLabel ? (

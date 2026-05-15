@@ -36,11 +36,10 @@ export default function DishCard({
   }
 
   return (
-    <article className={`dish-card${!dish.on_stock ? ' dish-card--out-of-stock' : ''}`}>
-      <Link
-        to={`/dish/${restaurantId}/${dish.id}`}
-        className="dish-card__body"
-      >
+    <article
+      className={`dish-card${!dish.on_stock ? ' dish-card--out-of-stock' : ''}`}
+    >
+      <Link to={`/dish/${restaurantId}/${dish.id}`} className="dish-card__body">
         <div className="dish-card__media">
           {dish.thumb_image ? (
             <img
@@ -72,7 +71,11 @@ export default function DishCard({
       </Link>
 
       <div className="dish-card__actions">
-        <AppButton fullWidth onClick={handleAdd} status={!dish.on_stock ? 'neutral' : undefined}>
+        <AppButton
+          fullWidth
+          onClick={handleAdd}
+          status={!dish.on_stock ? 'neutral' : undefined}
+        >
           {dish.on_stock ? 'Adicionar' : 'Indisponível'}
         </AppButton>
       </div>

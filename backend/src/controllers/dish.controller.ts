@@ -34,12 +34,10 @@ export async function create(req: Request, res: Response): Promise<void> {
     payload.price == null ||
     payload.prep_time == null
   ) {
-    res
-      .status(400)
-      .json({
-        data: null,
-        error: 'name, description, price and prep_time are required',
-      })
+    res.status(400).json({
+      data: null,
+      error: 'name, description, price and prep_time are required',
+    })
     return
   }
 

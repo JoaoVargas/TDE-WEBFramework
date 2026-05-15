@@ -24,7 +24,7 @@
 }
 
 .restaurant-card__image--placeholder {
-  background: linear-gradient(135deg, #EDE0D4 0%, #D8DEC8 100%);
+  background: linear-gradient(135deg, #ede0d4 0%, #d8dec8 100%);
 }
 
 .restaurant-card__badge-row {
@@ -48,7 +48,7 @@
 }
 
 .restaurant-card__badge--closest {
-  background: #5F7055;
+  background: #5f7055;
   color: #fff;
   box-shadow: 0 1px 8px rgba(95, 112, 85, 0.38);
 }

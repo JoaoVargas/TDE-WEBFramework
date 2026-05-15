@@ -37,7 +37,7 @@ export default function Navbar() {
 
   const handleLogout = useCallback(() => {
     logout()
-    navigate('/', { replace: true })
+    void navigate('/', { replace: true })
   }, [logout, navigate])
 
   return (
