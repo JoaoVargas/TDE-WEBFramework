@@ -1,0 +1,6 @@
+mysql_data/*
+!mysql_data/.gitkeep
+portainer_data/*
+!portainer_data/.gitkeep
+workbench_data/*
+!workbench_data/.gitkeep
