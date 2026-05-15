@@ -1,0 +1,87 @@
+:root {
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Palette */
+  --bg: #f6f3eb;
+  --surface: #ffffff;
+  --surface-2: #ede9dc;
+  --ink: #221e14;
+  --ink-2: #3a3426;
+  --muted: #6b6554;
+  --muted-light: #9e9884;
+
+  /* Deep red — brand mark, badges, eyebrow accent */
+  --brand: #7f2020;
+  --brand-hover: #6b1a1a;
+  --brand-light: #f5eaea;
+
+  /* Muted sage green — primary CTAs, active states, prices */
+  --brand-2: #869b7e;
+  --brand-2-hover: #6f8267;
+  --brand-2-light: #eef2ec;
+
+  /* Functional */
+  --danger: #9a2828;
+  --danger-light: #fdeaea;
+  --warning: #7a6020;
+  --warning-light: #fdf5e0;
+
+  /* Borders — beige */
+  --border: #c9caac;
+  --border-light: #ddd9c5;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 3px rgba(34, 30, 20, 0.06);
+  --shadow-sm:
+    0 2px 10px rgba(34, 30, 20, 0.08), 0 1px 3px rgba(34, 30, 20, 0.04);
+  --shadow-md:
+    0 8px 28px rgba(34, 30, 20, 0.11), 0 3px 8px rgba(34, 30, 20, 0.05);
+  --shadow-lg:
+    0 20px 52px rgba(34, 30, 20, 0.16), 0 8px 18px rgba(34, 30, 20, 0.08);
+
+  /* Radii */
+  --radius-sm: 0.55rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.2rem;
+  --radius-xl: 1.6rem;
+  --radius-pill: 999px;
+
+  color: var(--ink);
+  background-color: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      ellipse at 4% 0%,
+      rgba(127, 32, 32, 0.1) 0,
+      transparent 42%
+    ),
+    radial-gradient(
+      ellipse at 96% 18%,
+      rgba(134, 155, 126, 0.14) 0,
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 50% 105%,
+      rgba(201, 202, 172, 0.2) 0,
+      transparent 48%
+    ),
+    var(--bg);
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+}

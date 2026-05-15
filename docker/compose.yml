@@ -1,0 +1,110 @@
+services:
+  # framework-order-workbench:
+  #   image: lscr.io/linuxserver/mysql-workbench:latest
+  #   container_name: framework-order-workbench
+  #   cap_add:
+  #     - IPC_LOCK
+  #   environment:
+  #     PUID: "1000"
+  #     PGID: "1000"
+  #     TZ: Etc/UTC
+  #   ports:
+  #     - "${MYSQL_WORKBENCH_PORT}:3000"
+  #     - "${MYSQL_WORKBENCH_HTTPS_PORT}:3001"
+  #   volumes:
+  #     - framework-order_workbench_data:/config
+  #   shm_size: "1gb"
+  #   networks:
+  #     - framework-order_network
+  # framework-order-portainer:
+  #   image: portainer/portainer-ce
+  #   container_name: framework-order-portainer
+  #   restart: always
+  #   ports:
+  #     - "${PORTAINER_PORT}:9000"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - framework-order_portainer_data:/data
+  #   networks:
+  #     - framework-order_network
+
+  framework-order-db:
+    image: mysql:8.4
+    container_name: framework-order-db
+    env_file:
+      - ./.env
+    ports:
+      - "${FRAMEWORK_ORDER_DB_PORT}:3306"
+    volumes:
+      - framework-order_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - framework-order_network
+
+  framework-order-backend:
+    image: node:lts-alpine
+    container_name: framework-order-backend
+    env_file:
+      - ./.env
+    ports:
+      - "${FRAMEWORK_ORDER_BACKEND_PORT}:3000"
+    volumes:
+      - ../backend:/app/backend
+    working_dir: /app/backend
+    environment:
+      NODE_ENV: development
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      framework-order-db:
+        condition: service_healthy
+    networks:
+      - framework-order_network
+
+  framework-order-frontend:
+    image: node:lts-alpine
+    container_name: framework-order-frontend
+    env_file:
+      - ./.env
+    ports:
+      - "${FRAMEWORK_ORDER_FRONTEND_PORT}:5173"
+    volumes:
+      - ../frontend:/app/frontend
+    working_dir: /app/frontend
+    environment:
+      NODE_ENV: development
+    command: sh -c "yarn && yarn dev --host 0.0.0.0"
+    depends_on:
+      - framework-order-backend
+    networks:
+      - framework-order_network
+
+
+volumes:
+  framework-order_db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./mysql_data
+      o: bind
+  framework-order_portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./portainer_data/
+      o: bind
+  framework-order_workbench_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./workbench_data/
+      o: bind
+
+
+networks:
+  framework-order_network:
+    driver: bridge

@@ -1,0 +1,94 @@
+.app-button {
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--brand-2);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition:
+    filter 0.15s ease,
+    transform 0.1s ease,
+    box-shadow 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.app-button:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 14px rgba(34, 30, 20, 0.2);
+}
+
+.app-button:active:not(:disabled) {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+.app-button:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
+.app-button--primary {
+  background: var(--brand-2);
+}
+
+.app-button--secondary {
+  background: var(--brand);
+}
+
+.app-button--danger {
+  background: var(--danger);
+}
+
+.app-button--neutral {
+  background: var(--muted);
+}
+
+.app-button--basic {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--ink-2);
+}
+
+.app-button--basic:hover:not(:disabled) {
+  background: var(--surface-2);
+  border-color: var(--border);
+  box-shadow: none;
+  filter: none;
+}
+
+.app-button--sm {
+  padding: 0.42rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.app-button--md {
+  padding: 0.55rem 1rem;
+}
+
+.app-button--lg {
+  padding: 0.72rem 1.3rem;
+  font-size: 0.98rem;
+}
+
+.app-button--icon {
+  padding: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  font-size: 1rem;
+  border-radius: var(--radius-sm);
+}
+
+.app-button--pill {
+  border-radius: var(--radius-pill);
+}
+
+.app-button--full {
+  width: 100%;
+}

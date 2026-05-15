@@ -1,0 +1,33 @@
+.cart-page__footer {
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 1.25rem;
+}
+
+.cart-page__footer-inner {
+  background: var(--brand-2);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  box-shadow: var(--shadow-md);
+}
+
+.cart-page__footer-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.cart-page__footer-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}

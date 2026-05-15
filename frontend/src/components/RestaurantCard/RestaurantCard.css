@@ -1,0 +1,111 @@
+.restaurant-card {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  /* fill the grid cell so all cards in a row share the same height */
+  height: 100%;
+}
+
+.restaurant-card__media {
+  position: relative;
+  height: 215px;
+  flex-shrink: 0;
+}
+
+.restaurant-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.restaurant-card__image--placeholder {
+  background: linear-gradient(135deg, #ede0d4 0%, #d8dec8 100%);
+}
+
+.restaurant-card__badge-row {
+  position: absolute;
+  left: 0.8rem;
+  top: 0.8rem;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.restaurant-card__badge {
+  font-size: 0.73rem;
+  font-weight: 700;
+  background: rgba(246, 243, 235, 0.94);
+  border-radius: var(--radius-pill);
+  padding: 0.28rem 0.65rem;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 1px 6px rgba(34, 30, 20, 0.14);
+  color: var(--ink-2);
+}
+
+.restaurant-card__badge--closest {
+  background: #5f7055;
+  color: #fff;
+  box-shadow: 0 1px 8px rgba(95, 112, 85, 0.38);
+}
+
+.restaurant-card__content {
+  padding: 1.1rem 1.15rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.restaurant-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.restaurant-card__name {
+  margin: 0;
+  font-size: 1.03rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.restaurant-card__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--ink-2);
+  border-radius: var(--radius-pill);
+  padding: 0.22rem 0.55rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.restaurant-card__description {
+  margin: 0;
+  font-size: 0.87rem;
+  color: var(--muted);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.restaurant-card__address {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted-light);
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
