@@ -1,0 +1,29 @@
+.register-form__password-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.password-rules {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.password-rules__item {
+  font-size: 0.8rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.15s ease;
+}
+
+.password-rules__item--valid {
+  color: var(--brand-2);
+}

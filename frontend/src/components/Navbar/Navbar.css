@@ -95,6 +95,42 @@
   justify-content: center;
 }
 
+.app-navbar__auth {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.app-navbar__user {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  padding: 0 0.25rem;
+}
+
+.app-navbar__logout {
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.app-navbar__logout:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+  border-color: var(--border);
+}
+
 @media (max-width: 720px) {
   .app-navbar__inner {
     padding: 0.7rem 0;
