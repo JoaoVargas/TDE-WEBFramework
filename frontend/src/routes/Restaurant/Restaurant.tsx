@@ -5,7 +5,6 @@ import { Navigate, useParams } from 'react-router-dom'
 import DishCard from '@/components/DishCard/DishCard'
 
 import { useCart } from '@/contexts/cartContext'
-import { useLocation } from '@/contexts/locationContext'
 
 import { listDishesByRestaurant } from '@/services/dish'
 import { getRestaurantById } from '@/services/restaurant'
@@ -15,7 +14,6 @@ import './Restaurant.css'
 export default function Restaurant() {
   const { id } = useParams()
   const { addItem } = useCart()
-  const { getDistanceLabel } = useLocation()
 
   const {
     data: restaurant,
@@ -91,17 +89,13 @@ export default function Restaurant() {
     <section className="restaurant-page">
       <header className="restaurant-page__hero">
         <div>
-          <p className="restaurant-page__eyebrow">Unidade</p>
+          <p className="restaurant-page__eyebrow">Restaurante</p>
           <h1>{restaurant.name}</h1>
-          <p>
-            {restaurant.address} - {restaurant.neighborhood}, {restaurant.city}
-          </p>
+          <p>{restaurant.description}</p>
         </div>
 
         <div className="restaurant-page__meta">
-          <span>{restaurant.deliveryTime}</span>
           <span>{restaurant.rating.toFixed(1)} estrela(s)</span>
-          <span>{getDistanceLabel(restaurant.id)}</span>
         </div>
       </header>
 

@@ -1,9 +1,11 @@
 export interface Dish {
   id: string
-  restaurantId: string
+  restaurant_id: string
   name: string
   description: string
   price: number
-  imageUrl: string
-  prepTime: string
+  thumb_image: string | null
+  prep_time: number
+  allergies: string | null
+  on_stock: boolean
 }

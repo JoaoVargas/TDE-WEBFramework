@@ -1,22 +1,15 @@
-export interface Address {
-  id: string
-  cep: string
-  country: string
-  state: string
-  city: string
-  neighborhood: string
-  street: string
-  number: string
-  created_at: Date
-  updated_at: Date
+import type mysql from 'mysql2/promise'
+import pool from '@/config/database'
+import type { AddressModel } from '@/types/address'
+
+const addressModel: AddressModel = {
+  async exists(id) {
+    const [rows] = await pool.query<mysql.RowDataPacket[]>(
+      'SELECT id FROM addresses WHERE id = ?',
+      [id],
+    )
+    return rows.length > 0
+  },
 }
 
-export interface CreateAddressPayload {
-  cep: string
-  country: string
-  state: string
-  city: string
-  neighborhood: string
-  street: string
-  number: string
-}
+export default addressModel

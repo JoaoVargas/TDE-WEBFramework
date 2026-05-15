@@ -33,11 +33,6 @@ services:
     container_name: framework-order-db
     env_file:
       - ./.env
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "${FRAMEWORK_ORDER_DB_PORT}:3306"
     volumes:
@@ -62,11 +57,6 @@ services:
       - ../backend:/app/backend
     working_dir: /app/backend
     environment:
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_USER: ${MYSQL_USER}
-      DB_PASSWORD: ${MYSQL_PASSWORD}
-      DB_NAME: ${MYSQL_DATABASE}
       NODE_ENV: development
     command: sh -c "npm install && npm run dev"
     depends_on:

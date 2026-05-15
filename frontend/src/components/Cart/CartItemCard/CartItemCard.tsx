@@ -70,11 +70,15 @@ export default function CartItemCard({
 
   return (
     <article className="cart-item">
-      <img
-        className="cart-item__image"
-        src={item.dish.imageUrl}
-        alt={item.dish.name}
-      />
+      {item.dish.thumb_image ? (
+        <img
+          className="cart-item__image"
+          src={item.dish.thumb_image}
+          alt={item.dish.name}
+        />
+      ) : (
+        <div className="cart-item__image cart-item__image--placeholder" />
+      )}
 
       <div className="cart-item__content">
         <h3>{item.dish.name}</h3>

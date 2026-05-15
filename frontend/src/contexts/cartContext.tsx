@@ -13,8 +13,8 @@ import type { CartContextType, CartItem, CartState } from '@/types/cart'
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
-const CART_STORAGE_KEY = 'cardapio-cart-v2'
-const LEGACY_CART_STORAGE_KEY = 'cardapio-cart-v1'
+const CART_STORAGE_KEY = 'cardapio-cart-v3'
+const LEGACY_CART_STORAGE_KEY = 'cardapio-cart-v2'
 
 function isCartItem(value: unknown): value is CartItem {
   if (!value || typeof value !== 'object') {
@@ -26,7 +26,7 @@ function isCartItem(value: unknown): value is CartItem {
   return (
     Boolean(candidate.dish) &&
     typeof candidate.dish?.id === 'string' &&
-    typeof candidate.dish?.restaurantId === 'string' &&
+    typeof candidate.dish?.restaurant_id === 'string' &&
     typeof candidate.quantity === 'number'
   )
 }
@@ -42,7 +42,7 @@ function normalizeCartState(raw: unknown): CartState {
         return acc
       }
 
-      const restaurantId = value.dish.restaurantId
+      const restaurantId = value.dish.restaurant_id
       const currentItems = acc[restaurantId] ?? []
       acc[restaurantId] = [...currentItems, value]
       return acc
@@ -94,19 +94,19 @@ export const CartContextProvider: React.FC<{ children: ReactNode }> = ({
 
   const addItem = useCallback((dish: Dish) => {
     setItemsByRestaurant((currentState) => {
-      const restaurantItems = currentState[dish.restaurantId] ?? []
+      const restaurantItems = currentState[dish.restaurant_id] ?? []
       const found = restaurantItems.find((item) => item.dish.id === dish.id)
 
       if (!found) {
         return {
           ...currentState,
-          [dish.restaurantId]: [...restaurantItems, { dish, quantity: 1 }],
+          [dish.restaurant_id]: [...restaurantItems, { dish, quantity: 1 }],
         }
       }
 
       return {
         ...currentState,
-        [dish.restaurantId]: restaurantItems.map((item) =>
+        [dish.restaurant_id]: restaurantItems.map((item) =>
           item.dish.id === dish.id
             ? { ...item, quantity: item.quantity + 1 }
             : item,

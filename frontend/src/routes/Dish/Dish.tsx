@@ -23,20 +23,16 @@ export default function Dish() {
   } = useQuery({
     queryKey: ['dish', restaurantIdParam, id],
     queryFn: ({ signal }) => {
-      if (!id) {
+      if (!id || !restaurantIdParam) {
         return Promise.resolve(null)
       }
 
-      return getDishById(id, signal)
+      return getDishById(restaurantIdParam, id, signal)
     },
-    enabled: Boolean(id),
+    enabled: Boolean(id) && Boolean(restaurantIdParam),
   })
 
-  const {
-    data: restaurant,
-    isError: isRestaurantError,
-    error: restaurantError,
-  } = useQuery({
+  const { data: restaurant } = useQuery({
     queryKey: ['restaurant', restaurantIdParam],
     queryFn: ({ signal }) => {
       if (!restaurantIdParam) {
@@ -60,11 +56,7 @@ export default function Dish() {
       isDishError,
       dishError,
       dishId: dish?.id ?? null,
-      relatedRestaurantId: dish?.restaurantId ?? null,
-      matchesRouteRestaurant:
-        Boolean(restaurantIdParam) && dish?.restaurantId === restaurantIdParam,
-      isRestaurantError,
-      restaurantError,
+      dishRestaurantId: dish?.restaurant_id ?? null,
       hasRestaurant: Boolean(restaurant),
     })
   }, [
@@ -74,40 +66,53 @@ export default function Dish() {
     isDishError,
     dishError,
     dish?.id,
-    dish?.restaurantId,
-    isRestaurantError,
-    restaurantError,
+    dish?.restaurant_id,
     restaurant,
   ])
 
   const itemInCart = items.find(
     (item) =>
-      item.dish.id === dish?.id && item.dish.restaurantId === restaurantIdParam,
+      item.dish.id === dish?.id &&
+      item.dish.restaurant_id === restaurantIdParam,
   )
 
   if (isLoading) {
     return <p className="dish-page__state">Carregando prato...</p>
   }
 
-  if (!dish || !restaurantIdParam || dish.restaurantId !== restaurantIdParam) {
+  if (!dish || !restaurantIdParam) {
     return <Navigate to="/dish-not-found" replace />
   }
 
   return (
     <section className="dish-page">
-      <img className="dish-page__image" src={dish.imageUrl} alt={dish.name} />
+      {dish.thumb_image ? (
+        <img
+          className="dish-page__image"
+          src={dish.thumb_image}
+          alt={dish.name}
+        />
+      ) : (
+        <div className="dish-page__image dish-page__image--placeholder" />
+      )}
 
       <div className="dish-page__content">
         <p className="dish-page__eyebrow">Detalhe do prato</p>
         <h1>{dish.name}</h1>
 
-        {restaurant ? <p>Unidade: {restaurant.name}</p> : null}
+        {restaurant ? <p>Restaurante: {restaurant.name}</p> : null}
 
         <p>{dish.description}</p>
 
+        {dish.allergies ? (
+          <p className="dish-page__allergies">
+            <strong>Alergênicos:</strong> {dish.allergies}
+          </p>
+        ) : null}
+
         <div className="dish-page__meta">
           <strong>R$ {dish.price.toFixed(2)}</strong>
-          <span>{dish.prepTime}</span>
+          <span>{dish.prep_time} min</span>
         </div>
 
         <AppButton status="primary" size="md" onClick={() => addItem(dish)}>

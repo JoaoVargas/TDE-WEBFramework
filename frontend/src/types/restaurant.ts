@@ -1,19 +1,16 @@
-import type { GeoPoint } from '@/types/location'
-
 export interface Restaurant {
   id: string
   name: string
-  address: string
-  neighborhood: string
-  city: string
-  state: string
-  cuisine: string
-  featuredDish: string
-  imageCategory: string
-  deliveryTime: string
+  description: string
+  thumb_image: string | null
   rating: number
-  priceLevel: '$' | '$$' | '$$$'
-  accentColor: string
-  coordinates: GeoPoint
-  imageUrl?: string | null
+  address: {
+    cep: string
+    country: string
+    state: string
+    city: string
+    neighborhood: string
+    street: string
+    number: string
+  }
 }

@@ -1,14 +1,12 @@
 import bcrypt from 'bcrypt'
 import { type Request, type Response } from 'express'
 import jwt from 'jsonwebtoken'
-import type mysql from 'mysql2/promise'
-import { v4 as uuidv4 } from 'uuid'
-import pool from '@/config/database'
-import {
-  type LoginPayload,
-  type RegisterPayload,
-  type User,
-} from '@/models/user.model'
+import userModel from '@/models/user.model'
+import type {
+  AuthResponse,
+  LoginPayload,
+  RegisterPayload,
+} from '@/types/api/auth'
 
 const JWT_SECRET = process.env.JWT_SECRET ?? 'dev_secret_change_in_production'
 const SALT_ROUNDS = 10
@@ -23,32 +21,30 @@ export async function register(req: Request, res: Response): Promise<void> {
     return
   }
 
-  const [existing] = await pool.query<mysql.RowDataPacket[]>(
-    'SELECT id FROM users WHERE email = ?',
-    [email],
-  )
-  if (existing.length > 0) {
+  if (await userModel.emailExists(email)) {
     res.status(409).json({ data: null, error: 'Email already in use' })
     return
   }
 
-  const hashed = await bcrypt.hash(password, SALT_ROUNDS)
-  const id = uuidv4()
-
-  await pool.query(
-    'INSERT INTO users (id, name, email, phone_number, password) VALUES (?, ?, ?, ?, ?)',
-    [id, name, email, phone_number ?? null, hashed],
-  )
-
-  const token = jwt.sign({ sub: id }, JWT_SECRET, { expiresIn: '7d' })
-
-  res.status(201).json({
-    data: {
-      token,
-      user: { id, name, email, phone_number: phone_number ?? null },
-    },
-    error: null,
+  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
+  const user = await userModel.create({
+    name,
+    email,
+    phone_number: phone_number ?? null,
+    hashedPassword,
   })
+
+  const token = jwt.sign({ sub: user.id }, JWT_SECRET, { expiresIn: '7d' })
+  const data: AuthResponse = {
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone_number: user.phone_number,
+    },
+  }
+  res.status(201).json({ data, error: null })
 }
 
 export async function login(req: Request, res: Response): Promise<void> {
@@ -61,34 +57,21 @@ export async function login(req: Request, res: Response): Promise<void> {
     return
   }
 
-  const [rows] = await pool.query<mysql.RowDataPacket[]>(
-    'SELECT * FROM users WHERE email = ?',
-    [email],
-  )
-  if (rows.length === 0) {
-    res.status(401).json({ data: null, error: 'Invalid credentials' })
-    return
-  }
-
-  const user = rows[0] as User
-  const valid = await bcrypt.compare(password, user.password)
-  if (!valid) {
+  const user = await userModel.findByEmail(email)
+  if (!user || !(await bcrypt.compare(password, user.password))) {
     res.status(401).json({ data: null, error: 'Invalid credentials' })
     return
   }
 
   const token = jwt.sign({ sub: user.id }, JWT_SECRET, { expiresIn: '7d' })
-
-  res.json({
-    data: {
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        phone_number: user.phone_number,
-      },
+  const data: AuthResponse = {
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone_number: user.phone_number,
     },
-    error: null,
-  })
+  }
+  res.json({ data, error: null })
 }

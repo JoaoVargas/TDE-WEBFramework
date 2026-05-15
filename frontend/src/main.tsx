@@ -6,7 +6,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import BaseLayout from '@/components/BaseLayout/BaseLayout'
 
 import { CartContextProvider } from '@/contexts/cartContext'
-import { LocationContextProvider } from '@/contexts/locationContext'
 import { RestaurantContextProvider } from '@/contexts/restaurantContext'
 import { AlertContextProvider } from './contexts/alertContext'
 
@@ -51,9 +50,7 @@ function AppProviders({ children }: { children: React.ReactNode }) {
       <AlertContextProvider>
         <CartContextProvider>
           <RestaurantContextProvider>
-            <LocationContextProvider>
-              <BrowserRouter>{children}</BrowserRouter>
-            </LocationContextProvider>
+            <BrowserRouter>{children}</BrowserRouter>
           </RestaurantContextProvider>
         </CartContextProvider>
       </AlertContextProvider>

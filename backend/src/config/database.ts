@@ -14,6 +14,13 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   multipleStatements: true,
+  typeCast(field, next) {
+    if (field.type === 'DECIMAL' || field.type === 'NEWDECIMAL') {
+      const value = field.string()
+      return value === null ? null : parseFloat(value)
+    }
+    return next()
+  },
 })
 
 export async function checkConnection(): Promise<void> {

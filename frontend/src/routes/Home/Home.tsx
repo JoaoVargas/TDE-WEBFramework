@@ -2,19 +2,12 @@ import { Link } from 'react-router-dom'
 
 import RestaurantCard from '@/components/RestaurantCard/RestaurantCard'
 
-import { useLocation } from '@/contexts/locationContext'
 import { useRestaurant } from '@/contexts/restaurantContext'
 
 import './Home.css'
 
 export default function Home() {
   const { restaurants, restaurantsLoading, restaurantsError } = useRestaurant()
-  const {
-    locationFetchStatus,
-    locationAddress,
-    closestRestaurantId,
-    getDistanceLabel,
-  } = useLocation()
 
   return (
     <section className="home-page">
@@ -22,22 +15,9 @@ export default function Home() {
         <p className="home-page__eyebrow">Franquia Cardapio</p>
         <h1>Escolha sua unidade e monte seu pedido</h1>
         <p>
-          Mesmo sabor, unidades diferentes. Descubra a mais perto de voce e
-          comece o pedido em poucos cliques.
+          Mesmo sabor, unidades diferentes. Descubra a sua favorita e comece o
+          pedido em poucos cliques.
         </p>
-
-        <div className="home-page__location">
-          <strong>Sua localizacao:</strong>{' '}
-          {locationFetchStatus === 'fetching'
-            ? 'Buscando localizacao...'
-            : null}
-          {locationFetchStatus === 'error'
-            ? 'Nao foi possivel obter sua localizacao.'
-            : null}
-          {locationFetchStatus === 'success'
-            ? locationAddress || 'Curitiba - PR'
-            : null}
-        </div>
       </header>
 
       {restaurantsLoading ? (
@@ -61,11 +41,7 @@ export default function Home() {
             to={`/restaurant/${restaurant.id}`}
             className="home-page__card-link"
           >
-            <RestaurantCard
-              restaurant={restaurant}
-              isClosest={restaurant.id === closestRestaurantId}
-              distanceLabel={getDistanceLabel(restaurant.id)}
-            />
+            <RestaurantCard restaurant={restaurant} />
           </Link>
         ))}
       </div>
