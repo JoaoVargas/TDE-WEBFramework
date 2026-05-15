@@ -16,6 +16,7 @@ interface RestaurantData {
   name: string
   description: string
   rating: number
+  thumb_image: string
   address: AddressData
   dishes: DishData[]
 }
@@ -26,6 +27,7 @@ interface DishData {
   price: number
   prep_time: number
   allergies: string | null
+  thumb_image: string | null
 }
 
 const sharedDishes: DishData[] = [
@@ -35,6 +37,7 @@ const sharedDishes: DishData[] = [
     price: 5.0,
     prep_time: 1,
     allergies: null,
+    thumb_image: null,
   },
   {
     name: 'Refrigerante',
@@ -43,6 +46,7 @@ const sharedDishes: DishData[] = [
     price: 8.0,
     prep_time: 1,
     allergies: null,
+    thumb_image: null,
   },
   {
     name: 'Suco Natural',
@@ -50,6 +54,7 @@ const sharedDishes: DishData[] = [
     price: 12.0,
     prep_time: 5,
     allergies: null,
+    thumb_image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=600&q=80',
   },
 ]
 
@@ -59,6 +64,8 @@ const restaurants: RestaurantData[] = [
     description:
       'Autêntica cozinha italiana com massas artesanais e vinhos selecionados',
     rating: 4.8,
+    thumb_image:
+      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80',
     address: {
       cep: '01310-100',
       country: 'Brasil',
@@ -77,6 +84,8 @@ const restaurants: RestaurantData[] = [
         price: 45.0,
         prep_time: 20,
         allergies: 'glúten, ovos, lactose',
+        thumb_image:
+          'https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Pizza Margherita',
@@ -85,6 +94,8 @@ const restaurants: RestaurantData[] = [
         price: 52.0,
         prep_time: 25,
         allergies: 'glúten, lactose',
+        thumb_image:
+          'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Tiramisu',
@@ -93,6 +104,8 @@ const restaurants: RestaurantData[] = [
         price: 28.0,
         prep_time: 15,
         allergies: 'glúten, ovos, lactose, cafeína',
+        thumb_image:
+          'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=400&q=80',
       },
     ],
   },
@@ -101,6 +114,8 @@ const restaurants: RestaurantData[] = [
     description:
       'Culinária japonesa contemporânea com peixes frescos importados diariamente',
     rating: 4.7,
+    thumb_image:
+      'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80',
     address: {
       cep: '22041-001',
       country: 'Brasil',
@@ -119,6 +134,8 @@ const restaurants: RestaurantData[] = [
         price: 48.0,
         prep_time: 15,
         allergies: 'peixe, soja',
+        thumb_image:
+          'https://images.unsplash.com/photo-1617196034183-421b4040d366?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Temaki de Camarão',
@@ -127,6 +144,8 @@ const restaurants: RestaurantData[] = [
         price: 35.0,
         prep_time: 10,
         allergies: 'crustáceos, glúten, lactose',
+        thumb_image:
+          'https://images.unsplash.com/photo-1559410545-0bdcd187e0a6?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Miso Ramen',
@@ -135,6 +154,8 @@ const restaurants: RestaurantData[] = [
         price: 42.0,
         prep_time: 20,
         allergies: 'soja, glúten, ovos',
+        thumb_image:
+          'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?auto=format&fit=crop&w=400&q=80',
       },
     ],
   },
@@ -143,6 +164,8 @@ const restaurants: RestaurantData[] = [
     description:
       'Hambúrgueres artesanais com blend especial de carne e ingredientes premium',
     rating: 4.5,
+    thumb_image:
+      'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80',
     address: {
       cep: '30112-000',
       country: 'Brasil',
@@ -161,6 +184,8 @@ const restaurants: RestaurantData[] = [
         price: 38.0,
         prep_time: 15,
         allergies: 'glúten, lactose, ovos',
+        thumb_image:
+          'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Onion Rings',
@@ -169,6 +194,8 @@ const restaurants: RestaurantData[] = [
         price: 22.0,
         prep_time: 10,
         allergies: 'glúten, ovos',
+        thumb_image:
+          'https://images.unsplash.com/photo-1541014741259-de529411b96a?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Milkshake de Chocolate',
@@ -177,6 +204,8 @@ const restaurants: RestaurantData[] = [
         price: 25.0,
         prep_time: 5,
         allergies: 'lactose',
+        thumb_image:
+          'https://images.unsplash.com/photo-1572490122747-3e9ad9a37f9f?auto=format&fit=crop&w=400&q=80',
       },
     ],
   },
@@ -185,6 +214,8 @@ const restaurants: RestaurantData[] = [
     description:
       'Sabores vibrantes do México com receitas tradicionais e pimentas selecionadas',
     rating: 4.6,
+    thumb_image:
+      'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80',
     address: {
       cep: '80010-010',
       country: 'Brasil',
@@ -203,6 +234,8 @@ const restaurants: RestaurantData[] = [
         price: 36.0,
         prep_time: 15,
         allergies: 'glúten',
+        thumb_image:
+          'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Nachos com Guacamole',
@@ -211,6 +244,8 @@ const restaurants: RestaurantData[] = [
         price: 32.0,
         prep_time: 10,
         allergies: 'lactose',
+        thumb_image:
+          'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Churros com Doce de Leite',
@@ -219,6 +254,8 @@ const restaurants: RestaurantData[] = [
         price: 24.0,
         prep_time: 15,
         allergies: 'glúten, lactose, ovos',
+        thumb_image:
+          'https://images.unsplash.com/photo-1515362778563-6a8d0e44bc0b?auto=format&fit=crop&w=400&q=80',
       },
     ],
   },
@@ -227,6 +264,8 @@ const restaurants: RestaurantData[] = [
     description:
       'Bistrô francês intimista com pratos clássicos da região da Borgonha',
     rating: 4.9,
+    thumb_image:
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&q=80',
     address: {
       cep: '90010-000',
       country: 'Brasil',
@@ -245,6 +284,8 @@ const restaurants: RestaurantData[] = [
         price: 38.0,
         prep_time: 10,
         allergies: 'glúten, peixe, lactose',
+        thumb_image:
+          'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Coq au Vin',
@@ -253,6 +294,8 @@ const restaurants: RestaurantData[] = [
         price: 65.0,
         prep_time: 40,
         allergies: 'álcool',
+        thumb_image:
+          'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=400&q=80',
       },
       {
         name: 'Crème Brûlée',
@@ -261,6 +304,8 @@ const restaurants: RestaurantData[] = [
         price: 32.0,
         prep_time: 20,
         allergies: 'ovos, lactose',
+        thumb_image:
+          'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?auto=format&fit=crop&w=400&q=80',
       },
     ],
   },
@@ -275,12 +320,13 @@ export async function seedRestaurants(
     const id = uuidv4()
     sharedDishIds.push(id)
     await conn.query(
-      'INSERT INTO dishes (id, name, description, price, thumb_image, prep_time, allergies) VALUES (?, ?, ?, ?, NULL, ?, ?)',
+      'INSERT INTO dishes (id, name, description, price, thumb_image, prep_time, allergies) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [
         id,
         dish.name,
         dish.description,
         dish.price,
+        dish.thumb_image,
         dish.prep_time,
         dish.allergies,
       ],
@@ -311,11 +357,12 @@ export async function seedRestaurants(
     const restaurantId = uuidv4()
     await conn.query(
       `INSERT INTO restaurants (id, name, description, thumb_image, rating, address_id)
-       VALUES (?, ?, ?, NULL, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?)`,
       [
         restaurantId,
         restaurant.name,
         restaurant.description,
+        restaurant.thumb_image,
         restaurant.rating,
         addressId,
       ],
@@ -331,12 +378,13 @@ export async function seedRestaurants(
     for (const dish of restaurant.dishes) {
       const dishId = uuidv4()
       await conn.query(
-        'INSERT INTO dishes (id, name, description, price, thumb_image, prep_time, allergies) VALUES (?, ?, ?, ?, NULL, ?, ?)',
+        'INSERT INTO dishes (id, name, description, price, thumb_image, prep_time, allergies) VALUES (?, ?, ?, ?, ?, ?, ?)',
         [
           dishId,
           dish.name,
           dish.description,
           dish.price,
+          dish.thumb_image,
           dish.prep_time,
           dish.allergies,
         ],

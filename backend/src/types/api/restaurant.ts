@@ -12,6 +12,7 @@ export interface RestaurantResponse {
     neighborhood: string
     street: string
     number: string
+    coords: { lat: number; lng: number } | null
   }
 }
 
@@ -28,6 +29,7 @@ export interface CreateRestaurantPayload {
     neighborhood: string
     street: string
     number: string
+    coords?: { lat: number; lng: number }
   }
 }
 
@@ -44,5 +46,6 @@ export interface UpdateRestaurantPayload {
     neighborhood?: string
     street?: string
     number?: string
+    coords?: { lat: number; lng: number }
   }
 }

@@ -7,6 +7,7 @@ export interface Address {
   neighborhood: string
   street: string
   number: string
+  coords: { lat: number; lng: number } | null
   created_at: Date
   updated_at: Date
 }

@@ -6,7 +6,7 @@ import type { RestaurantModel } from '@/types/restaurant'
 
 const SELECT_WITH_ADDRESS = `
   SELECT r.id, r.name, r.description, r.thumb_image, r.rating,
-         a.cep, a.country, a.state, a.city, a.neighborhood, a.street, a.number
+         a.cep, a.country, a.state, a.city, a.neighborhood, a.street, a.number, a.coords
   FROM restaurants r
   JOIN addresses a ON r.address_id = a.id
 `
@@ -25,7 +25,17 @@ function mapRow(row: mysql.RowDataPacket): RestaurantResponse {
     neighborhood: string
     street: string
     number: string
+    coords: string | { lat: number; lng: number } | null
   }
+
+  let coords: { lat: number; lng: number } | null = null
+  if (r.coords) {
+    coords =
+      typeof r.coords === 'string'
+        ? (JSON.parse(r.coords) as { lat: number; lng: number })
+        : r.coords
+  }
+
   return {
     id: r.id,
     name: r.name,
@@ -40,6 +50,7 @@ function mapRow(row: mysql.RowDataPacket): RestaurantResponse {
       neighborhood: r.neighborhood,
       street: r.street,
       number: r.number,
+      coords,
     },
   }
 }

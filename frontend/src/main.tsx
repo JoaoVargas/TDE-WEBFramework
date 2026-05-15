@@ -5,9 +5,10 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import BaseLayout from '@/components/BaseLayout/BaseLayout'
 
+import { AlertContextProvider } from '@/contexts/alertContext'
 import { CartContextProvider } from '@/contexts/cartContext'
+import { GeolocationContextProvider } from '@/contexts/geolocationContext'
 import { RestaurantContextProvider } from '@/contexts/restaurantContext'
-import { AlertContextProvider } from './contexts/alertContext'
 
 import Cart from '@/routes/Cart/Cart'
 import Dish from '@/routes/Dish/Dish'
@@ -48,11 +49,13 @@ function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AlertContextProvider>
-        <CartContextProvider>
-          <RestaurantContextProvider>
-            <BrowserRouter>{children}</BrowserRouter>
-          </RestaurantContextProvider>
-        </CartContextProvider>
+        <GeolocationContextProvider>
+          <CartContextProvider>
+            <RestaurantContextProvider>
+              <BrowserRouter>{children}</BrowserRouter>
+            </RestaurantContextProvider>
+          </CartContextProvider>
+        </GeolocationContextProvider>
       </AlertContextProvider>
     </QueryClientProvider>
   )

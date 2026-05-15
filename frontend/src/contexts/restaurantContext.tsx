@@ -3,13 +3,17 @@ import React, { createContext, useContext, useEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
 
 import { listRestaurants } from '@/services/restaurant'
-
 import type { Restaurant } from '@/types/restaurant'
+import { haversineKm } from '@/utils/distance'
+
+import { useGeolocationContext } from './geolocationContext'
 
 interface RestaurantContextType {
   restaurants: Restaurant[]
   restaurantsLoading: boolean
   restaurantsError: string | null
+  distances: Record<string, number>
+  closestId: string | null
 }
 
 const RestaurantContext = createContext<RestaurantContextType | undefined>(
@@ -40,9 +44,7 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
   const restaurants = useMemo(() => restaurantsData ?? [], [restaurantsData])
 
   useEffect(() => {
-    if (!import.meta.env.DEV) {
-      return
-    }
+    if (!import.meta.env.DEV) return
 
     console.warn('[restaurants:context] query state', {
       loading: restaurantsLoading,
@@ -56,9 +58,36 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
     ? 'Nao foi possivel carregar os restaurantes.'
     : null
 
+  const { coords: userCoords } = useGeolocationContext()
+
+  const { distances, closestId } = useMemo(() => {
+    if (!userCoords) return { distances: {} as Record<string, number>, closestId: null }
+
+    const map: Record<string, number> = {}
+    let minDist = Infinity
+    let minId: string | null = null
+
+    for (const r of restaurants) {
+      if (!r.address.coords) continue
+      const d = haversineKm(
+        userCoords.lat,
+        userCoords.lng,
+        r.address.coords.lat,
+        r.address.coords.lng,
+      )
+      map[r.id] = d
+      if (d < minDist) {
+        minDist = d
+        minId = r.id
+      }
+    }
+
+    return { distances: map, closestId: minId }
+  }, [userCoords, restaurants])
+
   const values: RestaurantContextType = useMemo(
-    () => ({ restaurants, restaurantsLoading, restaurantsError }),
-    [restaurants, restaurantsLoading, restaurantsError],
+    () => ({ restaurants, restaurantsLoading, restaurantsError, distances, closestId }),
+    [restaurants, restaurantsLoading, restaurantsError, distances, closestId],
   )
 
   return (

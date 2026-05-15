@@ -7,6 +7,7 @@ export interface AddressResponse {
   neighborhood: string
   street: string
   number: string
+  coords: { lat: number; lng: number } | null
 }
 
 export interface CreateAddressPayload {
@@ -17,4 +18,5 @@ export interface CreateAddressPayload {
   neighborhood: string
   street: string
   number: string
+  coords?: { lat: number; lng: number }
 }

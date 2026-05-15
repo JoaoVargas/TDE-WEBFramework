@@ -1,13 +1,21 @@
 import { Link } from 'react-router-dom'
 
 import RestaurantCard from '@/components/RestaurantCard/RestaurantCard'
-
+import { useGeolocationContext } from '@/contexts/geolocationContext'
 import { useRestaurant } from '@/contexts/restaurantContext'
 
 import './Home.css'
 
 export default function Home() {
-  const { restaurants, restaurantsLoading, restaurantsError } = useRestaurant()
+  const {
+    restaurants,
+    restaurantsLoading,
+    restaurantsError,
+    distances,
+    closestId,
+  } = useRestaurant()
+
+  const { locationLabel } = useGeolocationContext()
 
   return (
     <section className="home-page">
@@ -18,6 +26,10 @@ export default function Home() {
           Mesmo sabor, unidades diferentes. Descubra a sua favorita e comece o
           pedido em poucos cliques.
         </p>
+
+        {locationLabel ? (
+          <p className="home-page__location">📍 {locationLabel}</p>
+        ) : null}
       </header>
 
       {restaurantsLoading ? (
@@ -41,7 +53,11 @@ export default function Home() {
             to={`/restaurant/${restaurant.id}`}
             className="home-page__card-link"
           >
-            <RestaurantCard restaurant={restaurant} />
+            <RestaurantCard
+              restaurant={restaurant}
+              distance={distances[restaurant.id] ?? null}
+              isClosest={restaurant.id === closestId}
+            />
           </Link>
         ))}
       </div>

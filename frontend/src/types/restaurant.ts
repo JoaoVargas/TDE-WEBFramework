@@ -12,5 +12,6 @@ export interface Restaurant {
     neighborhood: string
     street: string
     number: string
+    coords: { lat: number; lng: number } | null
   }
 }
