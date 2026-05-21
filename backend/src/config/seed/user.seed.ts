@@ -13,8 +13,8 @@ export async function seedUser(conn: mysql.PoolConnection): Promise<void> {
   await conn.query(
     `INSERT INTO users (id, name, email, phone_number, password)
      VALUES (?, ?, ?, ?, ?)`,
-    [id, 'João Silva', 'joao@example.com', '+55 41 99999-0000', password],
+    [id, 'João Silva', 'email@example.com', '+55 41 99999-0000', password],
   )
 
-  console.log(`Seeded user: joao@example.com (password: senha123)`)
+  console.log(`Seeded user: email@example.com (password: senha123)`)
 }
