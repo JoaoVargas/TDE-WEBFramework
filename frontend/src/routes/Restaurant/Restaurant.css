@@ -107,6 +107,97 @@
   box-shadow: var(--shadow-xs);
 }
 
+/* ── Toolbar (filters + sort) ── */
+
+.restaurant-page__toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.restaurant-page__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.restaurant-page__sort-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.restaurant-page__sort-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-right: 0.1rem;
+}
+
+/* ── Shared chip ── */
+
+.restaurant-page__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.32rem 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: 0.84rem;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.restaurant-page__chip:hover {
+  border-color: var(--brand-2);
+  color: var(--brand-2);
+}
+
+.restaurant-page__chip--active {
+  background: var(--brand-2);
+  border-color: var(--brand-2);
+  color: #fff;
+  font-weight: 600;
+}
+
+.restaurant-page__chip--active:hover {
+  background: var(--brand-2-hover);
+  border-color: var(--brand-2-hover);
+  color: #fff;
+}
+
+.restaurant-page__sort-arrow {
+  font-size: 0.9rem;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* ── Dish groups ── */
+
+.restaurant-page__category {
+  display: grid;
+  gap: 1rem;
+}
+
+.restaurant-page__category-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--brand);
+  width: fit-content;
+}
+
 .restaurant-page__grid {
   display: grid;
   gap: 1.25rem;

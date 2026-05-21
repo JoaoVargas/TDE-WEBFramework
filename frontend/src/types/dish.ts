@@ -8,4 +8,6 @@ export interface Dish {
   prep_time: number
   allergies: string | null
   on_stock: boolean
+  category_id: string | null
+  category_name: string | null
 }

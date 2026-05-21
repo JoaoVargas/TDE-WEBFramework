@@ -9,6 +9,8 @@ export interface RestaurantDishResponse {
   thumb_image: string | null
   prep_time: number
   allergies: string | null
+  category_id: string | null
+  category_name: string | null
 }
 
 export interface CreateRestaurantDishPayload {

@@ -12,6 +12,15 @@ CREATE TABLE IF NOT EXISTS addresses (
   updated_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS categories (
+  id          CHAR(36)     NOT NULL PRIMARY KEY,
+  name        VARCHAR(255) NOT NULL,
+  description TEXT,
+  created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT uq_category_name UNIQUE (name)
+);
+
 CREATE TABLE IF NOT EXISTS restaurants (
   id          CHAR(36)       NOT NULL PRIMARY KEY,
   name        VARCHAR(255)   NOT NULL,
@@ -32,8 +41,10 @@ CREATE TABLE IF NOT EXISTS dishes (
   thumb_image VARCHAR(512),
   prep_time   INT            NOT NULL COMMENT 'Preparation time in minutes',
   allergies   TEXT,
+  category_id CHAR(36)       NULL,
   created_at  DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at  DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at  DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_dish_category FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS restaurant_dishes (
@@ -46,6 +57,17 @@ CREATE TABLE IF NOT EXISTS restaurant_dishes (
   CONSTRAINT fk_rd_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
   CONSTRAINT fk_rd_dish       FOREIGN KEY (dish_id)       REFERENCES dishes (id)       ON DELETE CASCADE,
   CONSTRAINT uq_restaurant_dish UNIQUE (restaurant_id, dish_id)
+);
+
+CREATE TABLE IF NOT EXISTS restaurant_categories (
+  id            CHAR(36) NOT NULL PRIMARY KEY,
+  restaurant_id CHAR(36) NOT NULL,
+  category_id   CHAR(36) NOT NULL,
+  created_at    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_rc_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
+  CONSTRAINT fk_rc_category   FOREIGN KEY (category_id)   REFERENCES categories (id)  ON DELETE CASCADE,
+  CONSTRAINT uq_restaurant_category UNIQUE (restaurant_id, category_id)
 );
 
 CREATE TABLE IF NOT EXISTS users (

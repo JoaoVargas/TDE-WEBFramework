@@ -14,6 +14,8 @@ function mapRow(row: RestaurantDishResponse): Dish {
     prep_time: row.prep_time,
     allergies: row.allergies,
     on_stock: Boolean(row.on_stock),
+    category_id: row.category_id,
+    category_name: row.category_name,
   }
 }
 

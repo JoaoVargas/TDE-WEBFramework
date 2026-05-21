@@ -24,6 +24,50 @@ const migrations: Migration[] = [
       }
     },
   },
+  {
+    name: '002_add_categories',
+    up: async (conn) => {
+      await conn.query(`
+        CREATE TABLE IF NOT EXISTS categories (
+          id          CHAR(36)     NOT NULL PRIMARY KEY,
+          name        VARCHAR(255) NOT NULL,
+          description TEXT,
+          created_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          updated_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+          CONSTRAINT uq_category_name UNIQUE (name)
+        )
+      `)
+
+      const [cols] = await conn.query<mysql.RowDataPacket[]>(
+        `SELECT COUNT(*) AS count
+         FROM information_schema.columns
+         WHERE table_schema = DATABASE()
+           AND table_name   = 'dishes'
+           AND column_name  = 'category_id'`,
+      )
+      if ((cols[0] as { count: number }).count === 0) {
+        await conn.query(
+          'ALTER TABLE dishes ADD COLUMN category_id CHAR(36) NULL AFTER allergies',
+        )
+        await conn.query(
+          'ALTER TABLE dishes ADD CONSTRAINT fk_dish_category FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL',
+        )
+      }
+
+      await conn.query(`
+        CREATE TABLE IF NOT EXISTS restaurant_categories (
+          id            CHAR(36) NOT NULL PRIMARY KEY,
+          restaurant_id CHAR(36) NOT NULL,
+          category_id   CHAR(36) NOT NULL,
+          created_at    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          updated_at    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+          CONSTRAINT fk_rc_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE,
+          CONSTRAINT fk_rc_category   FOREIGN KEY (category_id)   REFERENCES categories (id)  ON DELETE CASCADE,
+          CONSTRAINT uq_restaurant_category UNIQUE (restaurant_id, category_id)
+        )
+      `)
+    },
+  },
 ]
 
 async function ensureMigrationsTable(

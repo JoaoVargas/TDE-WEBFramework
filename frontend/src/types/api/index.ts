@@ -4,6 +4,8 @@ export type ApiResponse<T> =
 
 export * from './auth'
 export * from './address'
+export * from './category'
 export * from './dish'
 export * from './restaurant'
+export * from './restaurantCategory'
 export * from './restaurantDish'

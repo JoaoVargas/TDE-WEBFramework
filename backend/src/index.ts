@@ -7,6 +7,7 @@ import express, {
 import { initializeDatabase } from '@/config/database'
 import { runMigrations } from '@/config/migrations'
 import authRoutes from '@/routes/auth.routes'
+import categoryRoutes from '@/routes/category.routes'
 import dishRoutes from '@/routes/dish.routes'
 import restaurantRoutes from '@/routes/restaurant.routes'
 
@@ -17,6 +18,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
+app.use('/api/categories', categoryRoutes)
 app.use('/api/restaurants', restaurantRoutes)
 app.use('/api/dishes', dishRoutes)
 

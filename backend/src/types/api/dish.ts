@@ -6,6 +6,7 @@ export interface DishResponse {
   thumb_image: string | null
   prep_time: number
   allergies: string | null
+  category_id: string | null
 }
 
 export interface CreateDishPayload {
@@ -15,6 +16,7 @@ export interface CreateDishPayload {
   thumb_image?: string
   prep_time: number
   allergies?: string
+  category_id?: string
 }
 
 export interface UpdateDishPayload {
@@ -24,4 +26,5 @@ export interface UpdateDishPayload {
   thumb_image?: string
   prep_time?: number
   allergies?: string
+  category_id?: string | null
 }

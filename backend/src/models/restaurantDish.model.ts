@@ -10,11 +10,14 @@ import type { RestaurantDishResponse } from '@/types/api/restaurantDish'
 const restaurantDishModel: RestaurantDishModel = {
   async findByRestaurant(restaurantId) {
     const [rows] = await pool.query<mysql.RowDataPacket[]>(
-      `SELECT rd.*, d.name, d.description, d.price, d.thumb_image, d.prep_time, d.allergies
+      `SELECT rd.id, rd.restaurant_id, rd.dish_id, rd.on_stock,
+              d.name, d.description, d.price, d.thumb_image, d.prep_time, d.allergies,
+              d.category_id, c.name AS category_name
        FROM restaurant_dishes rd
        JOIN dishes d ON d.id = rd.dish_id
+       LEFT JOIN categories c ON c.id = d.category_id
        WHERE rd.restaurant_id = ?
-       ORDER BY d.name`,
+       ORDER BY (d.category_id IS NULL), c.name, d.name`,
       [restaurantId],
     )
     return rows as RestaurantDishResponse[]

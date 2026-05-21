@@ -8,6 +8,7 @@ export interface Dish {
   thumb_image: string | null
   prep_time: number
   allergies: string | null
+  category_id: string | null
   created_at: Date
   updated_at: Date
 }
