@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
-import React, { createContext, useContext, useMemo } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { useGeolocation } from '@/hooks/useGeolocation'
@@ -37,14 +36,16 @@ export const GeolocationContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { coords, error, loading } = useGeolocation()
+  const [locationLabel, setLocationLabel] = useState<string | null>(null)
 
-  const { data: locationLabel = null } = useQuery({
-    queryKey: ['reverse-geocode', coords?.lat, coords?.lng],
-    queryFn: () => reverseGeocode(coords!),
-    enabled: coords != null,
-    staleTime: 1000 * 60 * 10,
-    retry: 1,
-  })
+  useEffect(() => {
+    if (!coords) return
+    let cancelled = false
+    reverseGeocode(coords)
+      .then((label) => { if (!cancelled) setLocationLabel(label) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [coords?.lat, coords?.lng])  // eslint-disable-line react-hooks/exhaustive-deps
 
   const value = useMemo(
     () => ({ coords, locationLabel, error, loading }),

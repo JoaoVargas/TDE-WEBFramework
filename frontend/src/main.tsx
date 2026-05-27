@@ -1,6 +1,5 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import BaseLayout from '@/components/BaseLayout/BaseLayout'
@@ -22,16 +21,6 @@ import Restaurant from '@/routes/Restaurant/Restaurant'
 
 import './styles.css'
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      staleTime: 1000 * 60,
-    },
-  },
-})
-
 function AppRoutes() {
   return (
     <Routes>
@@ -52,19 +41,17 @@ function AppRoutes() {
 
 function AppProviders({ children }: { children: React.ReactNode }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AlertContextProvider>
-        <GeolocationContextProvider>
-          <CartContextProvider>
-            <RestaurantContextProvider>
-              <AuthContextProvider>
-                <BrowserRouter>{children}</BrowserRouter>
-              </AuthContextProvider>
-            </RestaurantContextProvider>
-          </CartContextProvider>
-        </GeolocationContextProvider>
-      </AlertContextProvider>
-    </QueryClientProvider>
+    <AlertContextProvider>
+      <GeolocationContextProvider>
+        <CartContextProvider>
+          <RestaurantContextProvider>
+            <AuthContextProvider>
+              <BrowserRouter>{children}</BrowserRouter>
+            </AuthContextProvider>
+          </RestaurantContextProvider>
+        </CartContextProvider>
+      </GeolocationContextProvider>
+    </AlertContextProvider>
   )
 }
 

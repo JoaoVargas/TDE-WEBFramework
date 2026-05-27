@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
-import React, { createContext, useContext, useEffect, useMemo } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { listRestaurants } from '@/services/restaurant'
@@ -23,23 +22,35 @@ const RestaurantContext = createContext<RestaurantContextType | undefined>(
 export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const {
-    data: restaurantsData,
-    isLoading: restaurantsLoading,
-    isError: restaurantsIsError,
-    error,
-  } = useQuery({
-    queryKey: ['restaurants'],
-    queryFn: async ({ signal }) => {
-      const response = await listRestaurants(signal)
+  const { coords: userCoords } = useGeolocationContext()
 
-      if (!response || !Array.isArray(response)) {
-        throw new Error('Invalid response format for restaurants')
-      }
+  const [restaurantsData, setRestaurantsData] = useState<Restaurant[] | undefined>(undefined)
+  const [restaurantsLoading, setRestaurantsLoading] = useState(true)
+  const [restaurantsIsError, setRestaurantsIsError] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
 
-      return response
-    },
-  })
+  useEffect(() => {
+    const controller = new AbortController()
+    setRestaurantsLoading(true)
+    setRestaurantsIsError(false)
+    setError(null)
+
+    listRestaurants(controller.signal)
+      .then((response) => {
+        if (!response || !Array.isArray(response)) {
+          throw new Error('Invalid response format for restaurants')
+        }
+        setRestaurantsData(response)
+      })
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === 'AbortError') return
+        setRestaurantsIsError(true)
+        setError(err instanceof Error ? err : new Error(String(err)))
+      })
+      .finally(() => setRestaurantsLoading(false))
+
+    return () => controller.abort()
+  }, [])
 
   const restaurants = useMemo(() => restaurantsData ?? [], [restaurantsData])
 
@@ -57,8 +68,6 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
   const restaurantsError = error
     ? 'Nao foi possivel carregar os restaurantes.'
     : null
-
-  const { coords: userCoords } = useGeolocationContext()
 
   const { distances, closestId } = useMemo(() => {
     if (!userCoords) return { distances: {}, closestId: null }

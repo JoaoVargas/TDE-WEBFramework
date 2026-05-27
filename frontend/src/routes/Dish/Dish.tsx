@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 
 import AppButton from '@/components/AppButton/AppButton'
@@ -9,6 +8,8 @@ import { useCart } from '@/contexts/cartContext'
 
 import { getDishById } from '@/services/dish'
 import { getRestaurantById } from '@/services/restaurant'
+import type { Dish as DishType } from '@/types/dish'
+import type { Restaurant } from '@/types/restaurant'
 
 import './Dish.css'
 
@@ -17,34 +18,47 @@ export default function Dish() {
   const { addItem, items } = useCart()
   const { openAlert } = useAlert()
 
-  const {
-    data: dish,
-    isLoading,
-    isError: isDishError,
-    error: dishError,
-  } = useQuery({
-    queryKey: ['dish', restaurantIdParam, id],
-    queryFn: ({ signal }) => {
-      if (!id || !restaurantIdParam) {
-        return Promise.resolve(null)
-      }
+  const [dish, setDish] = useState<DishType | null | undefined>(undefined)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDishError, setIsDishError] = useState(false)
+  const [dishError, setDishError] = useState<Error | null>(null)
 
-      return getDishById(restaurantIdParam, id, signal)
-    },
-    enabled: Boolean(id) && Boolean(restaurantIdParam),
-  })
+  const [restaurant, setRestaurant] = useState<Restaurant | null | undefined>(undefined)
 
-  const { data: restaurant } = useQuery({
-    queryKey: ['restaurant', restaurantIdParam],
-    queryFn: ({ signal }) => {
-      if (!restaurantIdParam) {
-        return Promise.resolve(null)
-      }
+  useEffect(() => {
+    if (!id || !restaurantIdParam) {
+      setIsLoading(false)
+      return
+    }
+    const controller = new AbortController()
+    setIsLoading(true)
+    setIsDishError(false)
+    setDishError(null)
 
-      return getRestaurantById(restaurantIdParam, signal)
-    },
-    enabled: Boolean(restaurantIdParam),
-  })
+    getDishById(restaurantIdParam, id, controller.signal)
+      .then(setDish)
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === 'AbortError') return
+        setIsDishError(true)
+        setDishError(err instanceof Error ? err : new Error(String(err)))
+      })
+      .finally(() => setIsLoading(false))
+
+    return () => controller.abort()
+  }, [restaurantIdParam, id])
+
+  useEffect(() => {
+    if (!restaurantIdParam) return
+    const controller = new AbortController()
+
+    getRestaurantById(restaurantIdParam, controller.signal)
+      .then(setRestaurant)
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === 'AbortError') return
+      })
+
+    return () => controller.abort()
+  }, [restaurantIdParam])
 
   useEffect(() => {
     if (!import.meta.env.DEV) {

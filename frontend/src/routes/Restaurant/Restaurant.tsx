@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 
@@ -8,6 +7,8 @@ import { useCart } from '@/contexts/cartContext'
 
 import { listDishesByRestaurant } from '@/services/dish'
 import { getRestaurantById } from '@/services/restaurant'
+import type { Dish } from '@/types/dish'
+import type { Restaurant as RestaurantType } from '@/types/restaurant'
 
 import './Restaurant.css'
 
@@ -22,33 +23,59 @@ export default function Restaurant() {
   const [sortField, setSortField] = useState<SortField | null>(null)
   const [sortDir, setSortDir] = useState<SortDir>('asc')
 
-  const {
-    data: restaurant,
-    isLoading: isLoadingRestaurant,
-    isError: isRestaurantError,
-    error: restaurantError,
-  } = useQuery({
-    queryKey: ['restaurant', id],
-    queryFn: ({ signal }) => {
-      if (!id) return Promise.resolve(null)
-      return getRestaurantById(id, signal)
-    },
-    enabled: Boolean(id),
-  })
+  const [restaurant, setRestaurant] = useState<RestaurantType | null | undefined>(undefined)
+  const [isLoadingRestaurant, setIsLoadingRestaurant] = useState(true)
+  const [isRestaurantError, setIsRestaurantError] = useState(false)
+  const [restaurantError, setRestaurantError] = useState<Error | null>(null)
 
-  const {
-    data: dishes = [],
-    isLoading: isLoadingMenu,
-    isError: isMenuError,
-    error: menuError,
-  } = useQuery({
-    queryKey: ['restaurant-menu', id],
-    queryFn: ({ signal }) => {
-      if (!id) return Promise.resolve([])
-      return listDishesByRestaurant(id, signal)
-    },
-    enabled: Boolean(id),
-  })
+  const [dishes, setDishes] = useState<Dish[]>([])
+  const [isLoadingMenu, setIsLoadingMenu] = useState(true)
+  const [isMenuError, setIsMenuError] = useState(false)
+  const [menuError, setMenuError] = useState<Error | null>(null)
+
+  useEffect(() => {
+    if (!id) {
+      setIsLoadingRestaurant(false)
+      return
+    }
+    const controller = new AbortController()
+    setIsLoadingRestaurant(true)
+    setIsRestaurantError(false)
+    setRestaurantError(null)
+
+    getRestaurantById(id, controller.signal)
+      .then(setRestaurant)
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === 'AbortError') return
+        setIsRestaurantError(true)
+        setRestaurantError(err instanceof Error ? err : new Error(String(err)))
+      })
+      .finally(() => setIsLoadingRestaurant(false))
+
+    return () => controller.abort()
+  }, [id])
+
+  useEffect(() => {
+    if (!id) {
+      setIsLoadingMenu(false)
+      return
+    }
+    const controller = new AbortController()
+    setIsLoadingMenu(true)
+    setIsMenuError(false)
+    setMenuError(null)
+
+    listDishesByRestaurant(id, controller.signal)
+      .then(setDishes)
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === 'AbortError') return
+        setIsMenuError(true)
+        setMenuError(err instanceof Error ? err : new Error(String(err)))
+      })
+      .finally(() => setIsLoadingMenu(false))
+
+    return () => controller.abort()
+  }, [id])
 
   const categories = useMemo(() => {
     const map = new Map<string, string>()
