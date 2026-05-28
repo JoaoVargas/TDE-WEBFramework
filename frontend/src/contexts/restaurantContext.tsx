@@ -24,48 +24,46 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const { coords: userCoords } = useGeolocationContext()
 
-  const [restaurantsData, setRestaurantsData] = useState<Restaurant[] | undefined>(undefined)
-  const [restaurantsLoading, setRestaurantsLoading] = useState(true)
-  const [restaurantsIsError, setRestaurantsIsError] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
+  const [state, setState] = useState<{
+    data: Restaurant[] | undefined
+    loading: boolean
+    isError: boolean
+    error: Error | null
+  }>({ data: undefined, loading: true, isError: false, error: null })
 
   useEffect(() => {
     const controller = new AbortController()
-    setRestaurantsLoading(true)
-    setRestaurantsIsError(false)
-    setError(null)
 
     listRestaurants(controller.signal)
       .then((response) => {
         if (!response || !Array.isArray(response)) {
           throw new Error('Invalid response format for restaurants')
         }
-        setRestaurantsData(response)
+        setState({ data: response, loading: false, isError: false, error: null })
       })
       .catch((err: unknown) => {
         if (err instanceof Error && err.name === 'AbortError') return
-        setRestaurantsIsError(true)
-        setError(err instanceof Error ? err : new Error(String(err)))
+        const error = err instanceof Error ? err : new Error(String(err))
+        setState({ data: undefined, loading: false, isError: true, error })
       })
-      .finally(() => setRestaurantsLoading(false))
 
     return () => controller.abort()
   }, [])
 
-  const restaurants = useMemo(() => restaurantsData ?? [], [restaurantsData])
+  const restaurants = useMemo(() => state.data ?? [], [state.data])
 
   useEffect(() => {
     if (!import.meta.env.DEV) return
 
     console.warn('[restaurants:context] query state', {
-      loading: restaurantsLoading,
-      isError: restaurantsIsError,
+      loading: state.loading,
+      isError: state.isError,
       total: restaurants.length,
-      error,
+      error: state.error,
     })
-  }, [restaurantsLoading, restaurantsIsError, restaurants.length, error])
+  }, [state.loading, state.isError, restaurants.length, state.error])
 
-  const restaurantsError = error
+  const restaurantsError = state.error
     ? 'Nao foi possivel carregar os restaurantes.'
     : null
 
@@ -97,12 +95,12 @@ export const RestaurantContextProvider: React.FC<{ children: ReactNode }> = ({
   const values: RestaurantContextType = useMemo(
     () => ({
       restaurants,
-      restaurantsLoading,
+      restaurantsLoading: state.loading,
       restaurantsError,
       distances,
       closestId,
     }),
-    [restaurants, restaurantsLoading, restaurantsError, distances, closestId],
+    [restaurants, state.loading, restaurantsError, distances, closestId],
   )
 
   return (

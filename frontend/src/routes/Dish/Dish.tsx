@@ -18,31 +18,29 @@ export default function Dish() {
   const { addItem, items } = useCart()
   const { openAlert } = useAlert()
 
-  const [dish, setDish] = useState<DishType | null | undefined>(undefined)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isDishError, setIsDishError] = useState(false)
-  const [dishError, setDishError] = useState<Error | null>(null)
+  const [dishState, setDishState] = useState<{
+    data: DishType | null | undefined
+    isError: boolean
+    error: Error | null
+  }>(() => ({ data: (id && restaurantIdParam) ? undefined : null, isError: false, error: null }))
+
+  const dish = dishState.data
+  const isLoading = dishState.data === undefined
+  const isDishError = dishState.isError
+  const dishError = dishState.error
 
   const [restaurant, setRestaurant] = useState<Restaurant | null | undefined>(undefined)
 
   useEffect(() => {
-    if (!id || !restaurantIdParam) {
-      setIsLoading(false)
-      return
-    }
+    if (!id || !restaurantIdParam) return
     const controller = new AbortController()
-    setIsLoading(true)
-    setIsDishError(false)
-    setDishError(null)
 
     getDishById(restaurantIdParam, id, controller.signal)
-      .then(setDish)
+      .then((data) => setDishState({ data, isError: false, error: null }))
       .catch((err: unknown) => {
-        if (err instanceof Error && err.name === 'AbortError') return
-        setIsDishError(true)
-        setDishError(err instanceof Error ? err : new Error(String(err)))
+        if (err instanceof Error && (err.name === 'AbortError' || err.name === 'CanceledError')) return
+        setDishState({ data: null, isError: true, error: err instanceof Error ? err : new Error(String(err)) })
       })
-      .finally(() => setIsLoading(false))
 
     return () => controller.abort()
   }, [restaurantIdParam, id])

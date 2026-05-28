@@ -23,56 +23,52 @@ export default function Restaurant() {
   const [sortField, setSortField] = useState<SortField | null>(null)
   const [sortDir, setSortDir] = useState<SortDir>('asc')
 
-  const [restaurant, setRestaurant] = useState<RestaurantType | null | undefined>(undefined)
-  const [isLoadingRestaurant, setIsLoadingRestaurant] = useState(true)
-  const [isRestaurantError, setIsRestaurantError] = useState(false)
-  const [restaurantError, setRestaurantError] = useState<Error | null>(null)
+  const [restaurantState, setRestaurantState] = useState<{
+    data: RestaurantType | null | undefined
+    isError: boolean
+    error: Error | null
+  }>(() => ({ data: id ? undefined : null, isError: false, error: null }))
 
-  const [dishes, setDishes] = useState<Dish[]>([])
-  const [isLoadingMenu, setIsLoadingMenu] = useState(true)
-  const [isMenuError, setIsMenuError] = useState(false)
-  const [menuError, setMenuError] = useState<Error | null>(null)
+  const [menuState, setMenuState] = useState<{
+    data: Dish[] | undefined
+    isError: boolean
+    error: Error | null
+  }>(() => ({ data: id ? undefined : [], isError: false, error: null }))
+
+  const restaurant = restaurantState.data
+  const isLoadingRestaurant = restaurantState.data === undefined
+  const isRestaurantError = restaurantState.isError
+  const restaurantError = restaurantState.error
+
+  const dishes = useMemo(() => menuState.data ?? [], [menuState.data])
+  const isLoadingMenu = menuState.data === undefined
+  const isMenuError = menuState.isError
+  const menuError = menuState.error
 
   useEffect(() => {
-    if (!id) {
-      setIsLoadingRestaurant(false)
-      return
-    }
+    if (!id) return
     const controller = new AbortController()
-    setIsLoadingRestaurant(true)
-    setIsRestaurantError(false)
-    setRestaurantError(null)
 
     getRestaurantById(id, controller.signal)
-      .then(setRestaurant)
+      .then((data) => setRestaurantState({ data, isError: false, error: null }))
       .catch((err: unknown) => {
-        if (err instanceof Error && err.name === 'AbortError') return
-        setIsRestaurantError(true)
-        setRestaurantError(err instanceof Error ? err : new Error(String(err)))
+        if (err instanceof Error && (err.name === 'AbortError' || err.name === 'CanceledError')) return
+        setRestaurantState({ data: null, isError: true, error: err instanceof Error ? err : new Error(String(err)) })
       })
-      .finally(() => setIsLoadingRestaurant(false))
 
     return () => controller.abort()
   }, [id])
 
   useEffect(() => {
-    if (!id) {
-      setIsLoadingMenu(false)
-      return
-    }
+    if (!id) return
     const controller = new AbortController()
-    setIsLoadingMenu(true)
-    setIsMenuError(false)
-    setMenuError(null)
 
     listDishesByRestaurant(id, controller.signal)
-      .then(setDishes)
+      .then((data) => setMenuState({ data, isError: false, error: null }))
       .catch((err: unknown) => {
-        if (err instanceof Error && err.name === 'AbortError') return
-        setIsMenuError(true)
-        setMenuError(err instanceof Error ? err : new Error(String(err)))
+        if (err instanceof Error && (err.name === 'AbortError' || err.name === 'CanceledError')) return
+        setMenuState({ data: [], isError: true, error: err instanceof Error ? err : new Error(String(err)) })
       })
-      .finally(() => setIsLoadingMenu(false))
 
     return () => controller.abort()
   }, [id])
