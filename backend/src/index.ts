@@ -6,6 +6,7 @@ import express, {
 } from 'express'
 import { initializeDatabase } from '@/config/database'
 import { runMigrations } from '@/config/migrations'
+import { autoSeedIfEmpty } from '@/config/seed/auto-seed'
 import authRoutes from '@/routes/auth.routes'
 import categoryRoutes from '@/routes/category.routes'
 import dishRoutes from '@/routes/dish.routes'
@@ -34,6 +35,7 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
 async function start(): Promise<void> {
   await initializeDatabase()
   await runMigrations()
+  await autoSeedIfEmpty()
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 }
 
