@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { Navigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 
 import AppButton from '@/components/AppButton/AppButton'
 
 import { useAlert } from '@/contexts/alertContext'
+import { useAuth } from '@/contexts/authContext'
 import { useCart } from '@/contexts/cartContext'
 
 import { getDishById } from '@/services/dish'
@@ -17,6 +18,8 @@ export default function Dish() {
   const { restaurant_id: restaurantIdParam, id } = useParams()
   const { addItem, items } = useCart()
   const { openAlert } = useAlert()
+  const { isAuthenticated } = useAuth()
+  const navigate = useNavigate()
 
   const [dishState, setDishState] = useState<{
     data: DishType | null | undefined
@@ -91,6 +94,16 @@ export default function Dish() {
   )
 
   function handleAdd() {
+    if (!isAuthenticated) {
+      openAlert({
+        title: 'Login necessário',
+        description: 'Você precisa estar logado para adicionar itens ao carrinho.',
+        onActionText: 'Entrar',
+        onCancelText: 'Cancelar',
+        onAction: () => void navigate('/login'),
+      })
+      return
+    }
     if (!dish?.on_stock) {
       openAlert({
         title: 'Prato esgotado',

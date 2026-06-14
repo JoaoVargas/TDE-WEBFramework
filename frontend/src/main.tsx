@@ -10,6 +10,8 @@ import { CartContextProvider } from '@/contexts/cartContext'
 import { GeolocationContextProvider } from '@/contexts/geolocationContext'
 import { RestaurantContextProvider } from '@/contexts/restaurantContext'
 
+import ProtectedRoute from '@/components/ProtectedRoute/ProtectedRoute'
+
 import Cart from '@/routes/Cart/Cart'
 import Dish from '@/routes/Dish/Dish'
 import Home from '@/routes/Home/Home'
@@ -28,7 +30,9 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/cart" element={<Cart />} />
+        </Route>
         <Route path="/restaurant/:id" element={<Restaurant />} />
         <Route path="/restaurant-not-found" element={<MissingRestaurant />} />
         <Route path="/dish/:restaurant_id/:id" element={<Dish />} />

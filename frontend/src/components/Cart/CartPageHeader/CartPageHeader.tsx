@@ -34,7 +34,7 @@ export default function CartPageHeader({
     <header className="cart-page__header">
       <div>
         <h1>Carrinho</h1>
-        <p>{totalItems} item(ns) selecionado(s)</p>
+        <p>{totalItems === 1 ? `${totalItems} item selecionado` : `${totalItems} itens selecionados`} </p>
       </div>
 
       <AppButton

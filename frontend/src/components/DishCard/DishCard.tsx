@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import AppButton from '@/components/AppButton/AppButton'
 
 import { useAlert } from '@/contexts/alertContext'
+import { useAuth } from '@/contexts/authContext'
 
 import type { Dish } from '@/types/dish'
 
@@ -22,8 +23,20 @@ export default function DishCard({
   quantityInCart = 0,
 }: DishCardProps) {
   const { openAlert } = useAlert()
+  const { isAuthenticated } = useAuth()
+  const navigate = useNavigate()
 
   function handleAdd() {
+    if (!isAuthenticated) {
+      openAlert({
+        title: 'Login necessário',
+        description: 'Você precisa estar logado para adicionar itens ao carrinho.',
+        onActionText: 'Entrar',
+        onCancelText: 'Cancelar',
+        onAction: () => void navigate('/login'),
+      })
+      return
+    }
     if (!dish.on_stock) {
       openAlert({
         title: 'Prato esgotado',

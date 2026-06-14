@@ -17,22 +17,25 @@ export default function Navbar() {
   const navigate = useNavigate()
 
   const NavLinkItem = useCallback(
-    ({ to, label, end }: { to: string; label: string; end?: boolean }) => (
-      <NavLink
-        key={to}
-        to={to}
-        end={end}
-        className={({ isActive }) =>
-          `app-navbar__link${isActive ? ' is-active' : ''}`
-        }
-      >
-        {label}
-        {to === '/cart' && totalItems > 0 ? (
-          <span className="app-navbar__cart-badge">{totalItems}</span>
-        ) : null}
-      </NavLink>
-    ),
-    [totalItems],
+    ({ to, label, end }: { to: string; label: string; end?: boolean }) => {
+      const resolvedTo = to === '/cart' && !isAuthenticated ? '/login' : to
+      return (
+        <NavLink
+          key={to}
+          to={resolvedTo}
+          end={end}
+          className={({ isActive }) =>
+            `app-navbar__link${isActive && resolvedTo === to ? ' is-active' : ''}`
+          }
+        >
+          {label}
+          {to === '/cart' && totalItems > 0 ? (
+            <span className="app-navbar__cart-badge">{totalItems}</span>
+          ) : null}
+        </NavLink>
+      )
+    },
+    [totalItems, isAuthenticated],
   )
 
   const handleLogout = useCallback(() => {
