@@ -2,12 +2,14 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react'
 import type { ReactNode } from 'react'
 
 import { loginUser, registerUser } from '@/services/auth'
+import { getMyPfp } from '@/services/user'
 import type { AuthUser, LoginPayload, RegisterPayload } from '@/types/api/auth'
 
 const TOKEN_KEY = 'auth-token'
@@ -17,6 +19,8 @@ interface AuthContextType {
   user: AuthUser | null
   token: string | null
   isAuthenticated: boolean
+  pfpDataUrl: string | null
+  setPfpDataUrl: (url: string | null) => void
   login: (payload: LoginPayload) => Promise<void>
   register: (payload: RegisterPayload) => Promise<void>
   logout: () => void
@@ -40,6 +44,15 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
       return null
     }
   })
+
+  const [pfpDataUrl, setPfpDataUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!token) return
+    getMyPfp()
+      .then((pfp) => setPfpDataUrl(`data:${pfp.mime_type};base64,${pfp.image_data}`))
+      .catch(() => setPfpDataUrl(null))
+  }, [token])
 
   const persist = useCallback((newToken: string, newUser: AuthUser) => {
     localStorage.setItem(TOKEN_KEY, newToken)
@@ -69,6 +82,7 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
     localStorage.removeItem(USER_KEY)
     setToken(null)
     setUser(null)
+    setPfpDataUrl(null)
   }, [])
 
   const values: AuthContextType = useMemo(
@@ -76,11 +90,13 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
       user,
       token,
       isAuthenticated: !!token,
+      pfpDataUrl,
+      setPfpDataUrl,
       login,
       register,
       logout,
     }),
-    [user, token, login, register, logout],
+    [user, token, pfpDataUrl, login, register, logout],
   )
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>

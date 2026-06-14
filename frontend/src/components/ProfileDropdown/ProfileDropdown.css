@@ -1,0 +1,68 @@
+/* ── Avatar circle ─────────────────────────────────────────── */
+.profile-dropdown__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.profile-dropdown__avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-dropdown__avatar-initials {
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+/* ── Trigger button ────────────────────────────────────────── */
+.profile-dropdown__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 0.26rem 0.65rem 0.26rem 0.3rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.profile-dropdown__trigger:hover,
+.profile-dropdown__trigger.is-open {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.profile-dropdown__name {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-dropdown__caret {
+  font-size: 0.68rem;
+  color: var(--muted);
+  transition: transform 0.2s;
+}
+
+.profile-dropdown__trigger.is-open .profile-dropdown__caret {
+  transform: rotate(180deg);
+}

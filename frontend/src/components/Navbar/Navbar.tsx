@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
+import ProfileDropdown from '@/components/ProfileDropdown/ProfileDropdown'
 import { useAlert } from '@/contexts/alertContext'
 import { useAuth } from '@/contexts/authContext'
 import { useCart } from '@/contexts/cartContext'
@@ -14,7 +15,7 @@ const navItems = [
 
 export default function Navbar() {
   const { totalItems } = useCart()
-  const { user, isAuthenticated, logout } = useAuth()
+  const { isAuthenticated } = useAuth()
   const { openAlert } = useAlert()
   const navigate = useNavigate()
 
@@ -34,31 +35,6 @@ export default function Navbar() {
     [isAuthenticated, openAlert, navigate],
   )
 
-  const NavLinkItem = useCallback(
-    ({ to, label, end }: { to: string; label: string; end?: boolean }) => (
-      <NavLink
-        key={to}
-        to={to}
-        end={end}
-        onClick={to === '/cart' ? handleCartClick : undefined}
-        className={({ isActive }) =>
-          `app-navbar__link${isActive ? ' is-active' : ''}`
-        }
-      >
-        {label}
-        {to === '/cart' && totalItems > 0 ? (
-          <span className="app-navbar__cart-badge">{totalItems}</span>
-        ) : null}
-      </NavLink>
-    ),
-    [totalItems, handleCartClick],
-  )
-
-  const handleLogout = useCallback(() => {
-    logout()
-    void navigate('/', { replace: true })
-  }, [logout, navigate])
-
   return (
     <header className="app-navbar">
       <div className="app-navbar__inner">
@@ -68,30 +44,27 @@ export default function Navbar() {
         </NavLink>
 
         <nav className="app-navbar__links" aria-label="Main navigation">
-          {navItems.map((item) => (
-            <NavLinkItem
-              key={item.to}
-              to={item.to}
-              label={item.label}
-              end={item.end}
-            />
+          {navItems.map(({ to, label, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              onClick={to === '/cart' ? handleCartClick : undefined}
+              className={({ isActive }) =>
+                `app-navbar__link${isActive ? ' is-active' : ''}`
+              }
+            >
+              {label}
+              {to === '/cart' && totalItems > 0 ? (
+                <span className="app-navbar__cart-badge">{totalItems}</span>
+              ) : null}
+            </NavLink>
           ))}
         </nav>
 
         <div className="app-navbar__auth">
           {isAuthenticated ? (
-            <>
-              <span className="app-navbar__user">
-                {user?.name.split(' ')[0]}
-              </span>
-              <button
-                type="button"
-                className="app-navbar__logout"
-                onClick={handleLogout}
-              >
-                Sair
-              </button>
-            </>
+            <ProfileDropdown />
           ) : (
             <NavLink
               to="/login"

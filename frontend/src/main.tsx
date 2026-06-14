@@ -18,6 +18,7 @@ import Home from '@/routes/Home/Home'
 import Login from '@/routes/Login/Login'
 import MissingDish from '@/routes/MissingDish/MissingDish'
 import MissingRestaurant from '@/routes/MissingRestaurant/MissingRestaurant'
+import Profile from '@/routes/Profile/Profile'
 import Register from '@/routes/Register/Register'
 import Restaurant from '@/routes/Restaurant/Restaurant'
 
@@ -32,6 +33,7 @@ function AppRoutes() {
         <Route path="/register" element={<Register />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/cart" element={<Cart />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
         <Route path="/restaurant/:id" element={<Restaurant />} />
         <Route path="/restaurant-not-found" element={<MissingRestaurant />} />

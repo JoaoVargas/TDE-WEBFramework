@@ -68,6 +68,37 @@ const migrations: Migration[] = [
       `)
     },
   },
+  {
+    name: '003_add_user_pfp',
+    up: async (conn) => {
+      await conn.query(`
+        CREATE TABLE IF NOT EXISTS user_pfp (
+          id         CHAR(36)     NOT NULL PRIMARY KEY,
+          user_id    CHAR(36)     NOT NULL,
+          mime_type  VARCHAR(100) NOT NULL DEFAULT 'image/jpeg',
+          image_data LONGTEXT     NOT NULL,
+          created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+          CONSTRAINT uq_user_pfp_user UNIQUE (user_id),
+          CONSTRAINT fk_pfp_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        )
+      `)
+
+      const [cols] = await conn.query<mysql.RowDataPacket[]>(
+        `SELECT COUNT(*) AS count
+         FROM information_schema.columns
+         WHERE table_schema = DATABASE()
+           AND table_name   = 'user_pfp'
+           AND column_name  = 'mime_type'`,
+      )
+      if ((cols[0] as { count: number }).count === 0) {
+        await conn.query(
+          `ALTER TABLE user_pfp
+           ADD COLUMN mime_type VARCHAR(100) NOT NULL DEFAULT 'image/jpeg' AFTER user_id`,
+        )
+      }
+    },
+  },
 ]
 
 async function ensureMigrationsTable(

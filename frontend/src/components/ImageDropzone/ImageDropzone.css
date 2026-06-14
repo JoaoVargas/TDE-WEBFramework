@@ -1,0 +1,119 @@
+.image-dropzone-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ── Zone ──────────────────────────────────────────────────── */
+.image-dropzone {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: var(--radius-lg);
+  border: 2px dashed var(--border);
+  background: var(--surface-2);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.18s, background 0.18s;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.image-dropzone:hover,
+.image-dropzone:focus-visible {
+  border-color: var(--brand-2);
+  background: var(--brand-2-light);
+}
+
+.image-dropzone--dragging {
+  border-color: var(--brand-2);
+  background: var(--brand-2-light);
+  border-style: solid;
+  box-shadow: 0 0 0 3px rgba(134, 155, 126, 0.25);
+}
+
+/* ── Hidden file input ─────────────────────────────────────── */
+.image-dropzone__input {
+  display: none;
+}
+
+/* ── Preview ───────────────────────────────────────────────── */
+.image-dropzone__preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Overlay (shown on hover / drag) ──────────────────────── */
+.image-dropzone__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 30, 20, 0.52);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+
+.image-dropzone:hover .image-dropzone__overlay,
+.image-dropzone:focus-visible .image-dropzone__overlay,
+.image-dropzone--dragging .image-dropzone__overlay {
+  opacity: 1;
+}
+
+.image-dropzone__overlay-text {
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* ── Empty state ───────────────────────────────────────────── */
+.image-dropzone__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1rem;
+  pointer-events: none;
+  text-align: center;
+}
+
+.image-dropzone__icon {
+  font-size: 1.6rem;
+  color: var(--muted);
+  line-height: 1;
+  transition: transform 0.15s;
+}
+
+.image-dropzone--dragging .image-dropzone__icon {
+  transform: translateY(3px);
+}
+
+.image-dropzone__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.image-dropzone__hint {
+  font-size: 0.72rem;
+  color: var(--muted-light);
+}
+
+/* ── Validation error ──────────────────────────────────────── */
+.image-dropzone__error {
+  font-size: 0.8rem;
+  color: var(--danger);
+  margin: 0;
+  max-width: 180px;
+}

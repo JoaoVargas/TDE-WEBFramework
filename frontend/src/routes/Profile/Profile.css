@@ -1,0 +1,244 @@
+.profile-page {
+  min-height: calc(100vh - 60px);
+  padding: 2rem 1rem 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-container {
+  width: min(600px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile-loading {
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 2rem;
+}
+
+/* Header */
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.profile-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0;
+}
+
+.profile-logout {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.85rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.profile-logout:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* Sections */
+.profile-section {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 1.75rem 2rem;
+}
+
+.profile-section__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-2);
+  margin: 0 0 1.25rem;
+}
+
+/* Avatar section */
+.profile-section--avatar {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.profile-file-input {
+  display: none;
+}
+
+/* Avatar circle */
+.profile-avatar {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface-2);
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+  padding: 0;
+  transition: border-color 0.2s;
+}
+
+.profile-avatar:hover {
+  border-color: var(--brand-2);
+}
+
+.profile-avatar__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-avatar__initials {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.profile-avatar__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 30, 20, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.18s;
+  border-radius: 50%;
+}
+
+.profile-avatar:hover .profile-avatar__overlay {
+  opacity: 1;
+}
+
+.profile-avatar__overlay-text {
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* Avatar meta */
+.profile-avatar-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.profile-avatar-hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.profile-avatar-hint--sub {
+  color: var(--muted-light);
+  font-size: 0.75rem;
+}
+
+.profile-avatar-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Form */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Feedback messages */
+.profile-api-error {
+  background: var(--danger-light);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.875rem;
+  color: var(--danger);
+  margin: 0;
+}
+
+.profile-success-msg {
+  background: var(--brand-2-light);
+  border: 1px solid var(--brand-2);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.875rem;
+  color: var(--brand-2-hover);
+  font-weight: 600;
+  margin: 0;
+}
+
+.profile-field-error {
+  font-size: 0.82rem;
+  color: var(--danger);
+  margin: 0;
+}
+
+/* Password rules */
+.profile-password-rules {
+  list-style: none;
+  padding: 0.75rem 1rem;
+  margin: 0;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.profile-password-rule {
+  font-size: 0.8rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.15s;
+}
+
+.profile-password-rule--ok {
+  color: var(--brand-2-hover);
+}
+
+.profile-password-rule__icon {
+  font-size: 0.75rem;
+  width: 1rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .profile-section {
+    padding: 1.25rem 1rem;
+  }
+
+  .profile-section--avatar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}

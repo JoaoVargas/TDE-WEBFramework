@@ -11,6 +11,7 @@ import authRoutes from '@/routes/auth.routes'
 import categoryRoutes from '@/routes/category.routes'
 import dishRoutes from '@/routes/dish.routes'
 import restaurantRoutes from '@/routes/restaurant.routes'
+import userRoutes from '@/routes/user.routes'
 
 const app = express()
 const PORT = process.env.PORT ?? 3001
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/categories', categoryRoutes)
 app.use('/api/restaurants', restaurantRoutes)
 app.use('/api/dishes', dishRoutes)
+app.use('/api/users', userRoutes)
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' })
